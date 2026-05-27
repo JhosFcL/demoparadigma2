@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiHogar</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="scripts/app.js" defer></script>
+</head>
+<body>
+
+    <!-- =============================================
+         NAVBAR — adaptado de Práctica 2
+         nav fija, ul horizontal, submenú con :hover
+    ============================================= -->
+    <nav class="topheader">
+        <a href="" class="logo">
+            <span class="logo-texto">Servi<strong>Hogar</strong></span>
+        </a>
+
+        <ul class="Menu-Horizontal">
+            <li><a href="#inicio">Inicio</a></li>
+
+            <li>
+                <a href="#">Servicios</a>
+                <ul class="Menu-Vertical">
+                    <li><a href="#">Plomería</a></li>
+                    <li><a href="#">Electricidad</a></li>
+                    <li><a href="#">Limpieza</a></li>
+                    <li><a href="#">Carpintería</a></li>
+                </ul>
+            </li>
+
+            <li><a href="#como-funciona">¿Cómo funciona?</a></li>
+            <li><a href="#contactanos">Contáctanos</a></li>
+        </ul>
+    </nav>
+
+    <!-- =============================================
+         SECCIÓN 1 — texto + imagen (Práctica 2: seccion-creditos)
+    ============================================= -->
+    <section class="seccion-creditos" id="inicio">
+        <div class="cont-gral-creditos">
+
+            <div class="cont-cred-texto">
+                <h2>Conecta con trabajadores de confianza, rápido y seguro.</h2>
+                <p>
+                    En <strong>ServiHogar</strong> encontrarás gasfiteros, electricistas,
+                    técnicos y más en minutos. Perfiles verificados, calificaciones reales,
+                    sin llamadas informales.
+                </p>
+                <p>
+                    Nuestro sistema de match te conecta con el trabajador disponible
+                    más cercano a tu zona en tiempo real.
+                </p>
+            </div>
+
+            <div class="cont-cred-img">
+                <!-- En tu proyecto real pon: <img src="images/trabajador.jpg" alt="..."> -->
+                <div class="img-placeholder">
+                    Trabajadores verificados en Lima
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- =============================================
+         SECCIÓN 2 — texto + video/iframe (Práctica 2: seccion-productos)
+         Agrega un botón igual al de esa práctica
+    ============================================= -->
+    <section class="seccion-productos" id="como-funciona">
+        <div class="cont-gral-productos">
+
+            <div class="cont-seg-texto">
+                <h2>¿Cómo funciona ServiHogar?</h2>
+                <p>
+                    Describe tu problema, recibe un match con el trabajador disponible
+                    más cercano y confírmalo en pocos pasos desde tu celular o computadora.
+                </p>
+                <p>
+                    Sin llamadas, sin WhatsApp informales. Todo dentro de la plataforma:
+                    chat, historial, calificaciones y seguimiento en tiempo real.
+                </p>
+                <button>Ver más servicios...</button>
+            </div>
+
+            <div class="cont-seg-video">
+                <!-- iframe igual que Práctica 2 — cambia el src por un video de ServiHogar -->
+                <iframe
+                    width="560"
+                    height="315"
+                    src="https://www.youtube.com/embed/DF8NvCKIPX8?si=A3MssSSDZ3eFE09e"
+                    title="Video ServiHogar"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- =============================================
+         SECCIÓN FORMULARIO — adaptado de Práctica 2
+         Misma estructura: form, campos con label+input,
+         select, checkboxes, radios y botón submit.
+         Aquí es para solicitar un servicio.
+    ============================================= -->
+    <section class="seccion-formulario" id="contactanos">
+        <div class="cont-gral-formulario">
+            <h2>Solicita un servicio</h2>
+            <p>Completa los datos y un trabajador disponible se pondrá en contacto contigo.</p>
+
+            <form class="formulario" id="formularioServicio">
+
+                <!-- Campo nombre — igual que Práctica 2 -->
+                <div class="campo">
+                    <label for="nombre">Nombres completos:</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre">
+                </div>
+
+                <!-- Campo email — igual que Práctica 2 -->
+                <div class="campo">
+                    <label for="email">Correo electrónico:</label>
+                    <input type="text" id="email" name="email" placeholder="Ingrese su correo electrónico">
+                </div>
+
+                <!-- Select — igual que Práctica 2, adaptado a distritos de Lima -->
+                <div class="campo">
+                    <label for="distrito">Distrito:</label>
+                    <select id="distrito" name="distrito">
+                        <option value="">Seleccione su distrito</option>
+                        <option value="Miraflores">Miraflores</option>
+                        <option value="San Isidro">San Isidro</option>
+                        <option value="Surco">Surco</option>
+                        <option value="La Molina">La Molina</option>
+                        <option value="San Borja">San Borja</option>
+                        <option value="Jesús María">Jesús María</option>
+                        <option value="Lince">Lince</option>
+                    </select>
+                </div>
+
+                <!-- Checkboxes — igual que Práctica 2, adaptado a servicios -->
+                <div class="campo">
+                    <label>Tipo de servicio que necesitas:</label>
+                    <ul class="lista-checkbox">
+                        <li><label><input type="checkbox" name="servicios" value="Plomería"> Plomería / Gasfitería</label></li>
+                        <li><label><input type="checkbox" name="servicios" value="Electricidad"> Electricidad</label></li>
+                        <li><label><input type="checkbox" name="servicios" value="Limpieza"> Limpieza del hogar</label></li>
+                        <li><label><input type="checkbox" name="servicios" value="Carpintería"> Carpintería</label></li>
+                    </ul>
+                </div>
+
+                <!-- Radios — igual que Práctica 2, adaptado a tipo de atención -->
+                <div class="campo">
+                    <label>Tipo de atención:</label>
+                    <ul class="lista-radio">
+                        <li>
+                            <label>
+                                <input type="radio" name="atencion" value="urgente"> Urgente (hoy)
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="atencion" value="programado"> Programado (elegir fecha)
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Botón submit — igual que Práctica 2 -->
+                <div class="campo">
+                    <button type="submit">Enviar solicitud</button>
+                </div>
+
+            </form>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SECCIÓN CHAT — adaptado de Práctica 1
+         header, main.mensajes, footer con input+button
+    ============================================= -->
+    <section class="seccion-chat">
+        <h2 class="chat-titulo">Habla con nuestro asistente</h2>
+        <p class="chat-subtitulo">Escribe el servicio que necesitas o escribe <strong>/listar</strong> para ver todos.</p>
+
+        <div class="contenedor-chat">
+
+            <header class="cabecera">
+                <div class="info-cabecera">
+                    <span class="titulo">ServiHogar</span>
+                    <span class="subtitulo">ASESOR</span>
+                </div>
+            </header>
+
+            <main class="mensajes">
+                <div class="mensaje bot">
+                    ¡Hola! Soy el asistente de ServiHogar. ¿En qué puedo ayudarte hoy?
+                </div>
+                <div class="mensaje bot">
+                    Puedes escribir el servicio que necesitas (ej: <em>gasfitero</em>,
+                    <em>electricista</em>) o escribe <strong>/listar</strong> para ver
+                    todos los servicios disponibles.
+                </div>
+            </main>
+
+            <footer class="entrada">
+                <input type="text" placeholder="Escribe tu mensaje..." id="inputMensaje" />
+                <button id="botonEnviar" disabled>Enviar</button>
+            </footer>
+
+        </div>
+    </section>
+
+    <!-- =============================================
+         FOOTER — adaptado de Práctica 2
+         3 columnas en flex: info, redes, políticas
+    ============================================= -->
+    <footer class="seccion-footer">
+        <div class="cont-gral-footer">
+
+            <!-- Columna 1: info de la startup -->
+            <div class="footer-info">
+                <h3>Acerca de ServiHogar</h3>
+                <p>
+                    Startup digital peruana que conecta personas con trabajadores
+                    independientes verificados en Lima. Rápido, seguro y sin intermediarios.
+                </p>
+                <p>&copy; 2025 ServiHogar — Universidad Peruana Cayetano Heredia.</p>
+            </div>
+
+            <!-- Columna 2: equipo del proyecto -->
+            <div class="footer-redes">
+                <h3>Equipo de trabajo</h3>
+                <ul class="lista-redes">
+                    <li><a href="#">Yessica Alvarez Hanampa</a></li>
+                    <li><a href="#">Yanella Salcedo Siguas</a></li>
+                    <li><a href="#">Aldair Castillo Quispe</a></li>
+                    <li><a href="#">Masiel Espinoza Ramos</a></li>
+                    <li><a href="#">José Chávez Lozano</a></li>
+                </ul>
+            </div>
+
+            <!-- Columna 3: políticas -->
+            <div class="footer-politica">
+                <h3>Navegación</h3>
+                <ul class="lista-proteccion">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#como-funciona">¿Cómo funciona?</a></li>
+                    <li><a href="#contactanos">Solicitar servicio</a></li>
+                    <li><a href="#">Términos de uso</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </footer>
+
+</body>
+</html>
