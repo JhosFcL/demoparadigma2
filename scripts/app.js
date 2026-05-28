@@ -91,6 +91,7 @@ function agregarMensaje(tipo, contenido) {
     cuerpo.scrollTop = cuerpo.scrollHeight;       // igual que Práctica 1
 }
 
+//chat bot
 
 function procesarRespuesta(texto) {
     const mensaje = texto.toLowerCase();
@@ -161,6 +162,9 @@ function generarRespuestaSimulada(mensaje) {
         return 'No reconocí ese servicio. Escribe <strong>/listar</strong> para ver todos los disponibles, o prueba con: plomería, electricidad, limpieza, carpintería, pintura o jardinería.';
     }
 }
+
+
+//formulario
 
 
 const formulario = document.getElementById('formularioServicio');

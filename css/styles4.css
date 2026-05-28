@@ -28,7 +28,7 @@
     color: #333;
 }
 
-/* Campo individual — igual que Práctica 2 */
+/* Campo individual */
 .campo {
     background-color: #fffef7;
     padding: 15px;
@@ -75,7 +75,7 @@
     cursor: pointer;
 }
 
-/* Botón submit — igual que Práctica 2 */
+/* Botón formulario */
 .formulario button[type="submit"] {
     width: 100%;
     padding: 12px;
@@ -92,7 +92,7 @@
     background-color: #374151;
 }
 
-/* ---- CHAT — Práctica 1 ---- */
+/* ---- CHAT  */
 .seccion-chat {
     padding: 60px 20px;
     background-color: #f2f2f2;

@@ -3,7 +3,7 @@
     color: #1f2937;
 }
 
-/* ---- SECCIÓN 1: texto + imagen — Práctica 2 (seccion-creditos) ---- */
+/* ---- SECCIÓN 1:  ---- */
 .seccion-creditos {
     padding: 100px 20px 60px 20px;
     background-color: white;
@@ -51,7 +51,7 @@
     border-radius: 10px;
 }
 
-/* Placeholder visual (reemplazar con <img> en el proyecto real) */
+/* Placeholder visual ) */
 .img-placeholder {
     width: 100%;
     max-width: 500px;
@@ -64,7 +64,7 @@
     color: #92400e;
 }
 
-/* ---- SECCIÓN 2: texto + video — Práctica 2 (seccion-productos) ---- */
+/* ---- SECCIÓN 2: ---- */
 .seccion-productos {
     padding: 60px 20px;
     background-color: #fbf9fb;
@@ -101,7 +101,7 @@
     margin-bottom: 10px;
 }
 
-/* Botón — mismo estilo que Práctica 2 */
+/* Botón  */
 .cont-seg-texto button {
     margin-top: 20px;
     padding: 10px 20px;
