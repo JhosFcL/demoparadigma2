@@ -38,36 +38,35 @@
         </div>
 
         <div class="page">
-            <div style="background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,0.06);max-width:560px;">
-                <div style="display:flex;align-items:center;gap:20px;margin-bottom:28px;">
-                    <div id="perfil-avatar" style="width:70px;height:70px;border-radius:50%;background:#fbbf26;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700;color:#111;flex-shrink:0;">?</div>
+            <div class="perfil-box">
+                <div class="perfil-header">
+                    <div id="perfil-avatar" class="perfil-avatar">?</div>
                     <div>
-                        <div id="perfil-nombre" style="font-size:1.2rem;font-weight:700;">Cargando...</div>
-                        <div id="perfil-tipo" style="color:#6b7280;font-size:13px;margin-top:2px;">Cliente</div>
+                        <div id="perfil-nombre" class="perfil-nombre">Cargando...</div>
+                        <div id="perfil-tipo" class="perfil-subtipo">Cliente</div>
                     </div>
                 </div>
 
-                <div style="display:flex;flex-direction:column;gap:14px;">
-                    <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f3f4f6;">
-                        <span style="color:#6b7280;font-size:14px;">Correo</span>
-                        <span id="perfil-correo" style="font-weight:500;font-size:14px;">—</span>
+                <div class="perfil-datos">
+                    <div class="perfil-fila">
+                        <span class="perfil-label">Correo</span>
+                        <span id="perfil-correo" class="perfil-valor">—</span>
                     </div>
-                    <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f3f4f6;">
-                        <span style="color:#6b7280;font-size:14px;">Teléfono</span>
-                        <span id="perfil-telefono" style="font-weight:500;font-size:14px;">—</span>
+                    <div class="perfil-fila">
+                        <span class="perfil-label">Teléfono</span>
+                        <span id="perfil-telefono" class="perfil-valor">—</span>
                     </div>
-                    <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f3f4f6;">
-                        <span style="color:#6b7280;font-size:14px;">Distrito</span>
-                        <span id="perfil-distrito" style="font-weight:500;font-size:14px;">—</span>
+                    <div class="perfil-fila">
+                        <span class="perfil-label">Distrito</span>
+                        <span id="perfil-distrito" class="perfil-valor">—</span>
                     </div>
-                    <div style="display:flex;justify-content:space-between;padding:12px 0;">
-                        <span style="color:#6b7280;font-size:14px;">Tipo de cuenta</span>
-                        <span id="perfil-tipo2" style="font-weight:500;font-size:14px;">—</span>
+                    <div class="perfil-fila perfil-fila-last">
+                        <span class="perfil-label">Tipo de cuenta</span>
+                        <span id="perfil-tipo2" class="perfil-valor">—</span>
                     </div>
                 </div>
 
-                <button onclick="if(confirm('¿Cerrar sesión?')){localStorage.removeItem('servihogar_sesion');window.location.href='index.html';}"
-                    style="margin-top:24px;background:#ef4444;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-family:'Poppins',sans-serif;font-weight:600;cursor:pointer;font-size:14px;">
+                <button class="btn-cerrar-sesion" id="btn-cerrar-sesion">
                     Cerrar sesión
                 </button>
             </div>
@@ -75,31 +74,7 @@
     </div>
 </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const sesion = JSON.parse(localStorage.getItem("servihogar_sesion") || "null");
-    if (!sesion) { window.location.href = "login.html"; return; }
-
-    const iniciales = (sesion.nombre[0] + (sesion.apellido ? sesion.apellido[0] : "")).toUpperCase();
-    document.getElementById("perfil-avatar").textContent = iniciales;
-    document.getElementById("topbar-avatar").textContent = iniciales;
-    document.getElementById("sidebar-name").textContent = sesion.nombre + " " + (sesion.apellido || "");
-    document.getElementById("perfil-nombre").textContent = sesion.nombre + " " + (sesion.apellido || "");
-    document.getElementById("perfil-tipo").textContent = sesion.tipo === "trabajador" ? "Trabajador" : "Cliente";
-    document.getElementById("perfil-tipo2").textContent = sesion.tipo === "trabajador" ? "Trabajador" : "Cliente";
-    document.getElementById("sidebar-type").textContent = sesion.tipo === "trabajador" ? "Trabajador" : "Cliente";
-    document.getElementById("perfil-correo").textContent = sesion.correo || "—";
-    document.getElementById("perfil-telefono").textContent = sesion.telefono || "—";
-    document.getElementById("perfil-distrito").textContent = sesion.distrito || "—";
-
-    document.getElementById("btn-salir").addEventListener("click", function(e) {
-        e.preventDefault();
-        localStorage.removeItem("servihogar_sesion");
-        window.location.href = "index.html";
-    });
-});
-</script>
-
+<script src="assets/js/perfil.js"></script>
 <script src="assets/js/app-interno.js"></script>
 </body>
 </html>
