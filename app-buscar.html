@@ -16,19 +16,19 @@
         </a>
         <nav class="sidebar-nav">
             <a href="app-inicio.html" class="nav-item">
-                <span class="icon">🏠</span><span>Inicio</span>
+                </span><span>Inicio</span>
             </a>
             <a href="app-buscar.html" class="nav-item active">
-                <span class="icon">🔍</span><span>Buscar</span>
+                <span>Buscar</span>
             </a>
             <a href="app-chat.html" class="nav-item">
-                <span class="icon">💬</span><span>Chats</span>
+                <span>Chats</span>
             </a>
             <a href="app-historial.html" class="nav-item">
-                <span class="icon">📋</span><span>Historial</span>
+              <span>Historial</span>
             </a>
             <a href="app-perfil.html" class="nav-item">
-                <span class="icon">👤</span><span>Perfil</span>
+                <span>Perfil</span>
             </a>
         </nav>
         <div class="sidebar-user">
@@ -55,10 +55,10 @@
 
             <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
                 <button class="pill active" onclick="filtrar('todos')">Todos</button>
-                <button class="pill" onclick="filtrar('gasfitería')">🔧 Gasfitería</button>
-                <button class="pill" onclick="filtrar('electricidad')">⚡ Electricidad</button>
-                <button class="pill" onclick="filtrar('limpieza')">🧹 Limpieza</button>
-                <button class="pill" onclick="filtrar('mudanza')">📦 Mudanza</button>
+                <button class="pill" onclick="filtrar('gasfitería')"> Gasfitería</button>
+                <button class="pill" onclick="filtrar('electricidad')"> Electricidad</button>
+                <button class="pill" onclick="filtrar('limpieza')"> Limpieza</button>
+                <button class="pill" onclick="filtrar('mudanza')"> Mudanza</button>
             </div>
 
             <div id="lista-trabajadores" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;"></div>
@@ -80,12 +80,12 @@
 
 <script>
 const trabajadores = [
-    { nombre:"Carlos Quispe", categoria:"gasfitería", emoji:"🔧", rating:"4.9", trabajos:42, distrito:"Miraflores" },
-    { nombre:"Ana Torres", categoria:"limpieza", emoji:"🧹", rating:"4.8", trabajos:87, distrito:"San Isidro" },
-    { nombre:"Pedro Mamani", categoria:"electricidad", emoji:"⚡", rating:"5.0", trabajos:31, distrito:"San Borja" },
-    { nombre:"Rosa Flores", categoria:"limpieza", emoji:"🧹", rating:"4.7", trabajos:65, distrito:"Surco" },
-    { nombre:"Juan Huanca", categoria:"mudanza", emoji:"📦", rating:"4.8", trabajos:19, distrito:"La Molina" },
-    { nombre:"Luis Cárdenas", categoria:"electricidad", emoji:"⚡", rating:"4.9", trabajos:53, distrito:"Lince" },
+    { nombre:"Carlos Quispe", categoria:"gasfitería", rating:"4.9", trabajos:42, distrito:"Miraflores" },
+    { nombre:"Ana Torres", categoria:"limpieza", rating:"4.8", trabajos:87, distrito:"San Isidro" },
+    { nombre:"Pedro Mamani", categoria:"electricidad", rating:"5.0", trabajos:31, distrito:"San Borja" },
+    { nombre:"Rosa Flores", categoria:"limpieza", rating:"4.7", trabajos:65, distrito:"Surco" },
+    { nombre:"Juan Huanca", categoria:"mudanza", rating:"4.8", trabajos:19, distrito:"La Molina" },
+    { nombre:"Luis Cárdenas", categoria:"electricidad", rating:"4.9", trabajos:53, distrito:"Lince" },
 ];
 
 function renderTrabajadores(lista) {
