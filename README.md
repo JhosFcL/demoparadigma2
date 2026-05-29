@@ -1,1 +1,1 @@
-Por favor, descargar y cambiar el nombre por ejem de CSS/style.css a solo style.css, no estan subidos con la carpeta. Ademas, los styles con numeros (styles1,....) son particiones del styles.css original. Solo es la particion del codigo donde cada uno trabajó su parte.
+
