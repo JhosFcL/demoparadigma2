@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar | ServiHogar</title>
+    <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <a href="app-inicio.html" class="sidebar-logo">
+            <img src="assets/images/logo.jpg" alt="ServiHogar">
+            <span>Servi<b>Hogar</b></span>
+        </a>
+        <nav class="sidebar-nav">
+            <a href="app-inicio.html" class="nav-item">
+                <span class="icon">🏠</span><span>Inicio</span>
+            </a>
+            <a href="app-buscar.html" class="nav-item active">
+                <span class="icon">🔍</span><span>Buscar</span>
+            </a>
+            <a href="app-chat.html" class="nav-item">
+                <span class="icon">💬</span><span>Chats</span>
+            </a>
+            <a href="app-historial.html" class="nav-item">
+                <span class="icon">📋</span><span>Historial</span>
+            </a>
+            <a href="app-perfil.html" class="nav-item">
+                <span class="icon">👤</span><span>Perfil</span>
+            </a>
+        </nav>
+        <div class="sidebar-user">
+            <div class="user-name" id="sidebar-name">Cargando...</div>
+            <div class="user-type" id="sidebar-type">Cliente</div>
+            <a href="#" class="btn-salir" id="btn-salir">← Cerrar sesión</a>
+        </div>
+    </aside>
+
+    <div class="main">
+        <div class="topbar">
+            <div class="topbar-title">Buscar servicios</div>
+            <div class="topbar-actions">
+                <div class="topbar-notif">🔔<span class="badge-notif">2</span></div>
+                <div class="topbar-avatar" id="topbar-avatar">?</div>
+            </div>
+        </div>
+
+        <div class="page">
+            <div style="background:#fff;border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+                <input type="text" id="buscador" placeholder="¿Qué servicio necesitas? (gasfitero, electricista...)"
+                    style="width:100%;padding:12px 16px;border:1px solid #e5e7eb;border-radius:8px;font-size:15px;font-family:'Poppins',sans-serif;outline:none;">
+            </div>
+
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+                <button class="pill active" onclick="filtrar('todos')">Todos</button>
+                <button class="pill" onclick="filtrar('gasfitería')">🔧 Gasfitería</button>
+                <button class="pill" onclick="filtrar('electricidad')">⚡ Electricidad</button>
+                <button class="pill" onclick="filtrar('limpieza')">🧹 Limpieza</button>
+                <button class="pill" onclick="filtrar('mudanza')">📦 Mudanza</button>
+            </div>
+
+            <div id="lista-trabajadores" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+.pill{padding:8px 16px;border-radius:999px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-family:'Poppins',sans-serif;font-size:13px;transition:all .2s;}
+.pill.active,.pill:hover{background:#fbbf26;border-color:#fbbf26;font-weight:600;}
+.worker-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:10px;}
+.worker-avatar{width:50px;height:50px;border-radius:50%;background:#fbbf26;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:#111;}
+.worker-name{font-weight:600;font-size:15px;}
+.worker-cat{font-size:12px;color:#6b7280;}
+.worker-rating{color:#fbbf26;font-weight:600;font-size:13px;}
+.btn-contactar{background:#fbbf26;border:none;padding:9px 16px;border-radius:8px;font-family:'Poppins',sans-serif;font-weight:600;cursor:pointer;font-size:13px;transition:all .2s;}
+.btn-contactar:hover{background:#f0b014;}
+</style>
+
+<script>
+const trabajadores = [
+    { nombre:"Carlos Quispe", categoria:"gasfitería", emoji:"🔧", rating:"4.9", trabajos:42, distrito:"Miraflores" },
+    { nombre:"Ana Torres", categoria:"limpieza", emoji:"🧹", rating:"4.8", trabajos:87, distrito:"San Isidro" },
+    { nombre:"Pedro Mamani", categoria:"electricidad", emoji:"⚡", rating:"5.0", trabajos:31, distrito:"San Borja" },
+    { nombre:"Rosa Flores", categoria:"limpieza", emoji:"🧹", rating:"4.7", trabajos:65, distrito:"Surco" },
+    { nombre:"Juan Huanca", categoria:"mudanza", emoji:"📦", rating:"4.8", trabajos:19, distrito:"La Molina" },
+    { nombre:"Luis Cárdenas", categoria:"electricidad", emoji:"⚡", rating:"4.9", trabajos:53, distrito:"Lince" },
+];
+
+function renderTrabajadores(lista) {
+    const cont = document.getElementById("lista-trabajadores");
+    cont.innerHTML = lista.map(t => `
+        <div class="worker-card">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <div class="worker-avatar">${t.emoji}</div>
+                <div>
+                    <div class="worker-name">${t.nombre}</div>
+                    <div class="worker-cat">${t.categoria.charAt(0).toUpperCase()+t.categoria.slice(1)} · ${t.distrito}</div>
+                </div>
+            </div>
+            <div class="worker-rating">⭐ ${t.rating} · ${t.trabajos} trabajos</div>
+            <button class="btn-contactar" onclick="alert('Conectando con ${t.nombre}...')">Solicitar servicio</button>
+        </div>
+    `).join("");
+}
+
+function filtrar(cat) {
+    document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
+    event.target.classList.add("active");
+    const lista = cat === "todos" ? trabajadores : trabajadores.filter(t => t.categoria === cat);
+    renderTrabajadores(lista);
+}
+
+document.getElementById("buscador").addEventListener("input", function() {
+    const q = this.value.toLowerCase();
+    const lista = trabajadores.filter(t => t.nombre.toLowerCase().includes(q) || t.categoria.includes(q) || t.distrito.toLowerCase().includes(q));
+    renderTrabajadores(lista);
+});
+
+renderTrabajadores(trabajadores);
+</script>
+
+<script src="assets/js/app-interno.js"></script>
+</body>
+</html>

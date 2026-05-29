@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro | ServiHogar</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">
+            <img src="assets/images/logo.jpg" alt="Logo ServiHogar">
+            <h4>Servi<span>Hogar</span></h4>
+        </a>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="como-funciona.html">Cómo funciona</a>
+            <a href="sobre-nosotros.html">Sobre nosotros</a>
+            <a href="login.html">Iniciar sesión</a>
+        </nav>
+    </header>
+
+    <section class="registro">
+        <h2>Únete a ServiHogar</h2>
+        <p>Crea tu cuenta y encuentra trabajadores verificados en minutos</p>
+        <form action="login.html">
+            <div class="campo"><input type="text" name="nombre" placeholder="Nombre" required></div>
+            <div class="campo"><input type="text" name="apellido" placeholder="Apellido" required></div>
+            <div class="campo"><input type="tel" name="telefono" placeholder="Teléfono" required></div>
+            <div class="campo"><input type="email" name="correo" placeholder="Correo electrónico" required></div>
+            <div class="campo"><input type="text" name="distrito" placeholder="Distrito (ej: Miraflores, San Isidro)" required></div>
+            <div class="campo">
+                <select name="tipo" style="width:100%;padding:14px 16px;border:1px solid #e5e7eb;border-radius:8px;font-family:'Poppins',sans-serif;font-size:15px;background-color:#f9fafb;margin-bottom:16px;color:#4b5563;">
+                    <option value="">Tipo de cuenta</option>
+                    <option value="cliente">Soy cliente — necesito servicios</option>
+                    <option value="trabajador">Soy trabajador — ofrezco mis servicios</option>
+                </select>
+            </div>
+            <div class="campo"><input type="password" name="contraseña" placeholder="Contraseña" required></div>
+            <div class="campo"><input type="password" name="confirmar" placeholder="Confirmar contraseña" required></div>
+            <button type="submit">Registrarme</button>
+        </form>
+        <p class="enlace">¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a></p>
+    </section>
+
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 ServiHogar UPCH | Proyecto desarrollado por estudiantes de la Universidad Peruana Cayetano Heredia.</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/registro.js"></script>
+</body>
+</html>

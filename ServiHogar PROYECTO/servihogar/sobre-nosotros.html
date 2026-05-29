@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nosotros | ServiHogar</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        .sobre-hero { padding: 160px 20px 100px; background-color: var(--color-oscuro); text-align: center; position: relative; overflow: hidden; }
+        .sobre-hero::before { content: ''; position: absolute; bottom: -30%; left: 50%; transform: translateX(-50%); width: 700px; height: 400px; background: radial-gradient(ellipse, rgba(251,191,38,0.07) 0%, transparent 70%); pointer-events: none; }
+        .sobre-hero h1 { font-family: 'Montserrat', sans-serif; font-size: 2.8rem; font-weight: 800; color: var(--color-blanco); margin-bottom: 16px; letter-spacing: -1px; }
+        .sobre-hero h1 span { color: var(--color-primario); }
+        .sobre-hero p { color: var(--color-texto-claro); font-size: 1.1rem; max-width: 600px; margin: 0 auto 30px; }
+
+        .bloque { padding: 80px 20px; }
+        .bloque-inner { max-width: 1100px; margin: 0 auto; }
+
+        .historia { display: flex; align-items: center; gap: 60px; flex-wrap: wrap; }
+        .historia .texto { flex: 1; min-width: 280px; }
+        .historia .texto h2 { font-family: 'Montserrat', sans-serif; font-size: 2rem; font-weight: 800; color: var(--color-oscuro); margin-bottom: 20px; letter-spacing: -0.5px; }
+        .historia .texto h2 span { color: var(--color-primario); }
+        .historia .texto p { color: var(--color-texto-secundario); font-size: 16px; line-height: 1.8; margin-bottom: 14px; }
+        .historia .imagen img { width: 100%; max-width: 460px; border-radius: var(--radio-lg); box-shadow: var(--sombra-flotante); transition: var(--transicion); border: 3px solid var(--color-primario); }
+        .historia .imagen img:hover { transform: translateY(-8px); }
+
+        .fondo-oscuro { background-color: var(--color-oscuro); }
+        .mision-vision { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; max-width: 1100px; margin: 0 auto; }
+        .mv-card { background-color: rgba(255,255,255,0.05); border: 1px solid rgba(251,191,38,0.2); border-radius: var(--radio-lg); padding: 35px; flex: 1; min-width: 260px; max-width: 480px; position: relative; overflow: hidden; }
+        .mv-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background-color: var(--color-primario); }
+        .mv-card h2 { font-family: 'Montserrat', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--color-primario); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+        .mv-card p { color: var(--color-texto-claro); font-size: 15px; line-height: 1.8; }
+
+        .iniciativa { background-color: var(--color-fondo); text-align: center; }
+        .iniciativa h2 { font-family: 'Montserrat', sans-serif; font-size: 2rem; font-weight: 800; color: var(--color-oscuro); margin-bottom: 12px; }
+        .iniciativa > .bloque-inner > p { color: var(--color-texto-secundario); margin-bottom: 50px; font-size: 16px; }
+        .iconos { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+        .icono { background-color: var(--color-blanco); border-radius: var(--radio-lg); padding: 35px 25px; max-width: 280px; box-shadow: var(--sombra-md); border: 1px solid #e5e7eb; transition: var(--transicion); text-align: center; }
+        .icono:hover { transform: translateY(-8px); box-shadow: var(--sombra-flotante); border-color: var(--color-primario); }
+        .icono .icono-emoji { font-size: 3rem; margin-bottom: 16px; display: block; }
+        .icono h3 { font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--color-oscuro); margin-bottom: 10px; }
+        .icono p { color: var(--color-texto-secundario); font-size: 14px; line-height: 1.6; }
+
+        .equipo { background-color: var(--color-blanco); text-align: center; }
+        .equipo h2 { font-family: 'Montserrat', sans-serif; font-size: 2rem; font-weight: 800; color: var(--color-oscuro); margin-bottom: 12px; }
+        .equipo > .bloque-inner > p { color: var(--color-texto-secundario); margin-bottom: 50px; font-size: 16px; }
+        .personas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 900px; margin: 0 auto; }
+        .persona { text-align: center; }
+        .persona img { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 3px solid var(--color-primario); margin-bottom: 14px; transition: var(--transicion); box-shadow: var(--sombra-md); }
+        .persona img:hover { transform: scale(1.06); box-shadow: 0 8px 24px rgba(251,191,38,0.4); }
+        .persona h3 { font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 700; color: var(--color-oscuro); margin-bottom: 4px; }
+        .persona p { font-size: 13px; color: var(--color-texto-secundario); margin-bottom: 6px; }
+        .rol { display: inline-block; background-color: rgba(251,191,38,0.15); color: #92620a; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 50px; }
+
+        .llamado { padding: 100px 20px; background-color: var(--color-oscuro); text-align: center; }
+        .llamado h2 { font-family: 'Montserrat', sans-serif; font-size: 2rem; font-weight: 800; color: var(--color-blanco); margin-bottom: 14px; }
+        .llamado p { color: var(--color-texto-claro); margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; font-size: 16px; }
+
+        @media(max-width: 900px) {
+            .historia { flex-direction: column; text-align: center; }
+            .personas { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media(max-width: 600px) {
+            .personas { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">
+            <img src="assets/images/logo.jpg" alt="Logo ServiHogar">
+            <h4>Servi<span>Hogar</span></h4>
+        </a>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="como-funciona.html">Cómo funciona</a>
+            <a href="sobre-nosotros.html">Sobre nosotros</a>
+            <a href="login.html">Iniciar sesión</a>
+        </nav>
+    </header>
+
+    <section class="sobre-hero">
+        <h1>Conectamos Lima con <span>trabajadores de confianza</span></h1>
+        <p>Una startup peruana que cree que contratar un servicio del hogar no debería ser un acto de fe.</p>
+        <a href="registro.html" class="boton-principal">Únete a ServiHogar</a>
+    </section>
+
+    <section class="bloque">
+        <div class="bloque-inner historia">
+            <div class="texto">
+                <h2>Nuestra <span>historia</span></h2>
+                <p>ServiHogar nace de un problema real: encontrar un gasfitero, electricista o técnico confiable de forma rápida es difícil en Lima. Los canales actuales como grupos de WhatsApp, recomendaciones informales o posts en redes no garantizan disponibilidad, calidad ni seguridad.</p>
+                <p>Somos cinco estudiantes de la Universidad Peruana Cayetano Heredia que decidimos construir la solución. Una plataforma de match en tiempo real donde la velocidad de respuesta y la reputación verificable son los pilares de la propuesta de valor.</p>
+            </div>
+            <div class="imagen">
+                <img src="assets/images/imagenhistoria.png" alt="Historia de ServiHogar">
+            </div>
+        </div>
+    </section>
+
+    <section class="bloque fondo-oscuro">
+        <div class="mision-vision">
+            <div class="mv-card">
+                <h2>Nuestra Misión</h2>
+                <p>Resolver la contratación urgente de servicios del hogar en Lima mediante una plataforma de conexión en tiempo real con trabajadores independientes cercanos y verificados, eliminando la incertidumbre y la dependencia de contactos informales.</p>
+            </div>
+            <div class="mv-card">
+                <h2>Nuestra Visión</h2>
+                <p>Ser la plataforma líder de servicios del hogar en Perú, donde cualquier persona pueda contratar un profesional confiable en minutos, y cualquier trabajador independiente pueda crecer su clientela de forma digital y segura.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="bloque iniciativa">
+        <div class="bloque-inner">
+            <h2>Lo que nos diferencia</h2>
+            <p>No somos solo un directorio. Somos un sistema de match inteligente con tres pilares fundamentales.</p>
+            <div class="iconos">
+                <div class="icono">
+                    <span class="icono-emoji">⚡</span>
+                    <h3>Match rápido</h3>
+                    <p>Identificamos trabajadores disponibles y cercanos a tu ubicación. Respuesta en minutos, no días.</p>
+                </div>
+                <div class="icono">
+                    <span class="icono-emoji">🛡️</span>
+                    <h3>Perfiles verificados</h3>
+                    <p>Cada trabajador tiene historial, calificaciones reales y portafolio visual de sus trabajos anteriores.</p>
+                </div>
+                <div class="icono">
+                    <span class="icono-emoji">📱</span>
+                    <h3>Todo desde el celular</h3>
+                    <p>Solicita, coordina, paga y califica sin salir de la app. Sin llamadas ni negociaciones informales.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bloque equipo">
+        <div class="bloque-inner">
+            <h2>El equipo detrás de ServiHogar</h2>
+            <p>Cinco estudiantes de Ciencias e Ingeniería de la UPCH construyendo el futuro de los servicios del hogar en Lima.</p>
+            <div class="personas">
+                <div class="persona">
+                    <img src="assets/images/persona1.png" alt="Yanella Salcedo">
+                    <h3>Yanella Salcedo</h3>
+                    <p>Diseño Web</p>
+                    <span class="rol">Diseñadora de experiencia de usuario</span>
+                </div>
+                <div class="persona">
+                    <img src="assets/images/persona2.jpg" alt="José Fernando Chávez">
+                    <h3>José F. Chávez</h3>
+                    <p>Fundador Colaborador</p>
+                    <span class="rol">Verificación de datos </span>
+                </div>
+                <div class="persona">
+                    <img src="assets/images/persona3.jpg" alt="Yessica Alvarez">
+                    <h3>Yessica Alvarez</h3>
+                    <p>Calidad y pruebas de usuario</p>
+                    <span class="rol">Control de bugs</span>
+                </div>
+                <div class="persona">
+                    <img src="assets/images/persona4.jpg" alt="Masiel Espinoza">
+                    <h3>Masiel Espinoza</h3>
+                    <p>Comunicacion y marketing</p>
+                    <span class="rol">Estrategias digitales</span>
+                </div>
+                <div class="persona">
+                    <img src="assets/images/perfil.jpg" alt="Aldair Castillo">
+                    <h3>Aldair Castillo</h3>
+                    <p>Operaciones y soporte</p>
+                    <span class="rol">Gestión y soporte</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="llamado">
+        <h2>¿Tienes un oficio? Únete como trabajador y llega a más clientes.</h2>
+        <p>Publica tu perfil, muestra tu portafolio y recibe solicitudes directas de personas en tu zona.</p>
+        <a href="registro.html" class="boton-principal">Registrarse como trabajador</a>
+    </section>
+
+    <footer>
+        <div class="footer-contenido">
+            <div class="footer-col">
+                <h3>Acerca de ServiHogar</h3>
+                <p>Plataforma digital de servicios del hogar con match en tiempo real. Universidad Peruana Cayetano Heredia, Lima 2025.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Equipo</h3>
+                <ul>
+                    <li><a href="#">Yanella Salcedo</a></li>
+                    <li><a href="#">José Fernando Chávez</a></li>
+                    <li><a href="#">Yessica Alvarez</a></li>
+                    <li><a href="#">Masiel Espinoza</a></li>
+                    <li><a href="#">Aldair Castillo</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Navegación</h3>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="como-funciona.html">Cómo funciona</a></li>
+                    <li><a href="sobre-nosotros.html">Sobre nosotros</a></li>
+                    <li><a href="login.html">Iniciar sesión</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 ServiHogar UPCH | Proyecto desarrollado por estudiantes de la Universidad Peruana Cayetano Heredia.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

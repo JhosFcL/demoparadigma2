@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio | ServiHogar</title>
+    <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+<div class="app-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <a href="app-inicio.html" class="sidebar-logo">
+            <img src="assets/images/logo.jpg" alt="ServiHogar">
+            <span>Servi<b>Hogar</b></span>
+        </a>
+        <nav class="sidebar-nav">
+            <a href="app-inicio.html" class="nav-item active">
+                <span class="icon">🏠</span>
+                <span>Inicio</span>
+            </a>
+            <a href="app-buscar.html" class="nav-item">
+                <span class="icon">🔍</span>
+                <span>Buscar</span>
+            </a>
+            <a href="app-chat.html" class="nav-item">
+                <span class="icon">💬</span>
+                <span>Chats</span>
+            </a>
+            <a href="app-historial.html" class="nav-item">
+                <span class="icon">📋</span>
+                <span>Historial</span>
+            </a>
+            <a href="app-perfil.html" class="nav-item">
+                <span class="icon">👤</span>
+                <span>Perfil</span>
+            </a>
+        </nav>
+        <div class="sidebar-user">
+            <div class="user-name" id="sidebar-name">Cargando...</div>
+            <div class="user-type" id="sidebar-type">Cliente</div>
+            <a href="#" class="btn-salir" id="btn-salir">← Cerrar sesión</a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+        <div class="topbar">
+            <div class="topbar-title">Trabajos recientes</div>
+            <div class="topbar-actions">
+                <div class="topbar-notif">
+                    🔔
+                    <span class="badge-notif">2</span>
+                </div>
+                <div class="topbar-avatar" id="topbar-avatar">?</div>
+            </div>
+        </div>
+
+        <div class="page">
+
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-val">2,500+</div>
+                    <div class="stat-lbl">Trabajadores en Lima</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val">10,000+</div>
+                    <div class="stat-lbl">Servicios completados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val">4.9 ★</div>
+                    <div class="stat-lbl">Calificación promedio</div>
+                </div>
+            </div>
+
+            <!-- Feed tabs -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                <div class="tabs">
+                    <button class="tab active">Recientes</button>
+                    <button class="tab">Populares</button>
+                </div>
+                <a href="app-buscar.html" class="btn-primary" style="width:auto;padding:9px 18px;border-radius:8px;">+ Solicitar servicio</a>
+            </div>
+
+            <!-- Feed posts -->
+            <div class="feed">
+
+                <!-- Post 1 -->
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <div class="post-avatar-placeholder">C</div>
+                            <div>
+                                <div class="post-name">Carlos Méndez</div>
+                                <div class="post-meta">★ 4.9 (87) · 📍 Miraflores, Lima · Hace 2 horas</div>
+                            </div>
+                        </div>
+                        <span class="post-tag">Electricidad</span>
+                    </div>
+                    <div class="post-body">
+                        <h3>Instalación completa de sistema eléctrico en departamento nuevo</h3>
+                        <p>Proyecto completado: instalación de tablero eléctrico, cableado completo, enchufes y luminarias en departamento de 3 habitaciones. El cliente quedó muy satisfecho con el trabajo realizado en tiempo récord.</p>
+                        <div class="post-imgs">
+                            <img src="assets/images/img1.jpg" alt="Antes">
+                            <img src="assets/images/img2.jpg" alt="Después">
+                        </div>
+                    </div>
+                    <div style="padding: 0 18px 10px; font-size:13px; color:#6b7280;">
+                        ⭐ Ana Rodríguez calificó este servicio — ★★★★★ &nbsp;&nbsp; 45 me gusta · 12 comentarios
+                    </div>
+                    <div class="post-footer">
+                        <button class="post-action like-btn">👍 Me gusta <span class="like-count">45</span></button>
+                        <button class="post-action">💬 Comentar</button>
+                        <button class="post-action">↗️ Compartir</button>
+                    </div>
+                </div>
+
+                <!-- Post 2 -->
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <div class="post-avatar-placeholder">L</div>
+                            <div>
+                                <div class="post-name">Laura Pérez</div>
+                                <div class="post-meta">★ 5.0 (124) · 📍 San Borja, Lima · Hace 5 horas</div>
+                            </div>
+                        </div>
+                        <span class="post-tag">Limpieza</span>
+                    </div>
+                    <div class="post-body">
+                        <h3>Limpieza profunda de departamento — 3 habitaciones</h3>
+                        <p>Servicio completado en 4 horas. Limpieza de pisos, ventanas, cocina a fondo, baños y organización general. El cliente pidió reservar para el próximo mes. 🙌</p>
+                        <div class="post-imgs">
+                            <img src="assets/images/img3.jpg" alt="Trabajo">
+                            <img src="assets/images/img4.jpg" alt="Resultado">
+                        </div>
+                    </div>
+                    <div style="padding: 0 18px 10px; font-size:13px; color:#6b7280;">
+                        ⭐ Marco Quispe calificó este servicio — ★★★★★ &nbsp;&nbsp; 31 me gusta · 7 comentarios
+                    </div>
+                    <div class="post-footer">
+                        <button class="post-action like-btn">👍 Me gusta <span class="like-count">31</span></button>
+                        <button class="post-action">💬 Comentar</button>
+                        <button class="post-action">↗️ Compartir</button>
+                    </div>
+                </div>
+
+                <!-- Post 3 -->
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <div class="post-avatar-placeholder">R</div>
+                            <div>
+                                <div class="post-name">Roberto Silva</div>
+                                <div class="post-meta">★ 4.8 (56) · 📍 Lince, Lima · Hace 1 día</div>
+                            </div>
+                        </div>
+                        <span class="post-tag">Plomería</span>
+                    </div>
+                    <div class="post-body">
+                        <h3>Reparación de fuga en baño + cambio de tuberías</h3>
+                        <p>Detectamos la fuga, cambiamos las tuberías dañadas y revisamos todo el sistema de agua caliente. Trabajo garantizado por 6 meses.</p>
+                    </div>
+                    <div style="padding: 0 18px 10px; font-size:13px; color:#6b7280;">
+                        18 me gusta · 4 comentarios
+                    </div>
+                    <div class="post-footer">
+                        <button class="post-action like-btn">👍 Me gusta <span class="like-count">18</span></button>
+                        <button class="post-action">💬 Comentar</button>
+                        <button class="post-action">↗️ Compartir</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Avatar sidebar -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const s = document.querySelector(".sidebar-user");
+        const ini = document.getElementById("sidebar-name");
+        if (ini) {
+            const div = document.createElement("div");
+            div.style.cssText = "width:40px;height:40px;border-radius:50%;background:#fbbf26;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#111827;margin-bottom:10px;";
+            div.id = "sidebar-initials";
+            s.insertBefore(div, ini);
+        }
+    });
+</script>
+<script src="assets/js/app-interno.js"></script>
+</body>
+</html>
