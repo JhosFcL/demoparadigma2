@@ -1,0 +1,91 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f2f2f2;
+}
+
+/* ---- NAVBAR — Práctica 2 ---- */
+.topheader {
+    position: fixed;
+    background: linear-gradient(90deg, #f7d97b, #78cbe4);
+    width: 100%;
+    height: 90px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.logo {
+    text-decoration: none;
+}
+
+.logo-texto {
+    color: rgb(0, 0, 0);
+    font-size: 22px;
+}
+
+.logo-texto strong {
+    color: #000000;
+}
+
+.Menu-Horizontal {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.Menu-Horizontal li a {
+    text-decoration: none;
+    color: #355c7d;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.Menu-Horizontal li a:hover {
+    color: white;
+    font-size: 20px;
+}
+
+.Menu-Vertical {
+    padding: 0;
+    position: absolute;
+    display: none;
+    width: 200px;
+    list-style: none;
+    background-color: #fffdf8;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.12);
+}
+
+.Menu-Horizontal li:hover .Menu-Vertical {
+    display: block;
+}
+
+.Menu-Horizontal li {
+    position: relative;
+}
+
+.Menu-Vertical li a {
+    display: block;
+    text-decoration: none;
+    color: #355c7d;
+    font-size: 16px;
+}
+
+.Menu-Vertical li a:hover {
+    background-color: #fdf0c9;
+    color: #2d4d68;
+}

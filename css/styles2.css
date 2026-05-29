@@ -1,0 +1,145 @@
+
+/* ---- SECCIÓN 1:  ---- */
+.seccion-creditos {
+    padding: 100px 20px 60px 20px;
+    background-color: white;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.cont-gral-creditos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 45px;
+}
+
+.cont-cred-texto {
+    flex: 1;
+}
+
+.cont-cred-texto h2 {
+    color: #5b96a5;
+    margin-bottom: 16.5px;
+    font-size: 32px;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.cont-cred-texto p {
+    color: #4a4a4a;
+    line-height: 1.9;
+    margin-bottom: 16px;
+}
+
+.cont-cred-texto button {
+    margin-top: 25px;
+    padding: 14px 24px;
+    background-color: #f4c95d;
+    color: #3d3d3d;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: 600;
+    font-size: 17px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.cont-cred-img {
+    flex: 1;
+}
+
+.cont-cred-img img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 13px;
+}
+
+/* Placeholder visual ) */
+.img-placeholder {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 10px;
+    background-color: #fef3c7;
+    border: 2px dashed #fbbf26;
+    padding: 80px 20px;
+    text-align: center;
+    font-size: 18px;
+    color: #92680e;
+}
+
+/* ---- SECCIÓN 2: ---- */
+.seccion-productos {
+    padding: 60px 20px;
+    background-color: white;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cont-gral-productos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 55px;
+}
+
+.cont-seg-texto {
+    flex: 1;
+    max-width: 520px;
+}
+
+.cont-seg-texto h2 {
+    color: #5b96a5;
+    margin-bottom: 16.5px;
+    font-size: 32px;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.cont-seg-texto p {
+    color: #4a4a4a;
+    line-height: 1.9;
+    margin-bottom: 16px;
+}
+
+/* Botón  */
+.cont-seg-texto button {
+    margin-top: 25px;
+    padding: 14px 24px;
+    background-color: #f4c95d;
+    color: #3d3d3d;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: 600;
+    font-size: 17px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.cont-seg-texto button:hover {
+    background-color: #eabf4b;
+}
+
+.cont-seg-video {
+    flex: 1;
+}
+
+.cont-seg-video img {
+    width: 100%;
+    max-width: 520px;
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
