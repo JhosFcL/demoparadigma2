@@ -1,6 +1,3 @@
-// ── ServiHogar · app-interno.js ──
-// Carga datos de sesión en todas las pantallas internas
-
 document.addEventListener("DOMContentLoaded", function () {
     const sesion = JSON.parse(localStorage.getItem("servihogar_sesion") || "null");
 
@@ -10,14 +7,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    // Iniciales para el avatar
     const iniciales = (sesion.nombre[0] + (sesion.apellido ? sesion.apellido[0] : "")).toUpperCase();
 
-    // Rellenar avatar topbar
     const topAvatar = document.getElementById("topbar-avatar");
     if (topAvatar) topAvatar.textContent = iniciales;
 
-    // Rellenar sidebar usuario
     const sidebarName = document.getElementById("sidebar-name");
     const sidebarType = document.getElementById("sidebar-type");
     const sidebarInitials = document.getElementById("sidebar-initials");
@@ -26,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (sidebarType) sidebarType.textContent = sesion.tipo === "trabajador" ? "Trabajador" : "Cliente";
     if (sidebarInitials) sidebarInitials.textContent = iniciales;
 
-    // Botón cerrar sesión
     const btnSalir = document.getElementById("btn-salir");
     if (btnSalir) {
         btnSalir.addEventListener("click", function (e) {
@@ -36,7 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Pills de categoría (buscar)
     document.querySelectorAll(".pill").forEach(pill => {
         pill.addEventListener("click", function () {
             document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
@@ -44,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Tabs (historial)
     document.querySelectorAll(".tab").forEach(tab => {
         tab.addEventListener("click", function () {
             document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
@@ -52,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Like en posts del feed
     document.querySelectorAll(".post-action.like-btn").forEach(btn => {
         btn.addEventListener("click", function () {
             this.classList.toggle("liked");
@@ -64,7 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Chat: enviar mensaje
     const chatForm = document.getElementById("chat-form");
     const chatInput = document.getElementById("chat-input");
     const chatMessages = document.getElementById("chat-messages");
@@ -90,7 +79,6 @@ document.addEventListener("DOMContentLoaded", function () {
             chatInput.value = "";
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // Respuesta automática demo
             setTimeout(() => {
                 const resp = document.createElement("div");
                 resp.className = "msg";
@@ -107,7 +95,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Chat: seleccionar conversación
     document.querySelectorAll(".chat-item").forEach(item => {
         item.addEventListener("click", function () {
             document.querySelectorAll(".chat-item").forEach(i => i.classList.remove("active"));
@@ -118,7 +105,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Reservar de nuevo en historial
     document.querySelectorAll(".btn-reservar").forEach(btn => {
         btn.addEventListener("click", function () {
             alert("Redirigiendo a Buscar para encontrar al mismo trabajador...");
@@ -127,7 +113,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// ── Buscar ──
 const trabajadores = [
     { nombre:"Carlos Quispe", categoria:"gasfitería", emoji:"🔧", rating:"4.9", trabajos:42, distrito:"Miraflores" },
     { nombre:"Ana Torres", categoria:"limpieza", emoji:"🧹", rating:"4.8", trabajos:87, distrito:"San Isidro" },
@@ -174,7 +159,6 @@ if (buscador) {
 
 if (document.getElementById("lista-trabajadores")) renderTrabajadores(trabajadores);
 
-// ── Historial ──
 const historial = [
     { servicio:"Reparación de tubería", trabajador:"Carlos Quispe", emoji:"🔧", fecha:"12 may 2025", monto:"S/ 80", estado:"completado" },
     { servicio:"Limpieza del hogar", trabajador:"Ana Torres", emoji:"🧹", fecha:"05 may 2025", monto:"S/ 120", estado:"completado" },
@@ -211,7 +195,6 @@ function mostrarTab(filtro, btn) {
 
 if (document.getElementById("lista-historial")) renderHistorial(historial);
 
-// ── Chat: datos de conversaciones ──
 const conversaciones = [
     { id:1, nombre:"Carlos Quispe", emoji:"🔧", mensajes:[
         {tipo:"recv",texto:"Hola, ¿en qué te puedo ayudar?"},

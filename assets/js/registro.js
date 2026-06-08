@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // Guardar usuario en localStorage
     const usuarios = JSON.parse(localStorage.getItem("servihogar_usuarios") || "[]");
 
     const yaExiste = usuarios.find(u => u.correo === correo);

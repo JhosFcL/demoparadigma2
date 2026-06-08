@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // Recuperar usuarios registrados desde localStorage
     const usuarios = JSON.parse(localStorage.getItem("servihogar_usuarios") || "[]");
     const usuario = usuarios.find(u => u.correo === correo && u.contraseña === contraseña);
 

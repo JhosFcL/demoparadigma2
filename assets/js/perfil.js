@@ -1,5 +1,3 @@
-// ── perfil.js ── Carga datos del usuario en la pantalla de perfil
-
 document.addEventListener("DOMContentLoaded", function () {
     const sesion = JSON.parse(localStorage.getItem("servihogar_sesion") || "null");
     if (!sesion) { window.location.href = "login.html"; return; }
