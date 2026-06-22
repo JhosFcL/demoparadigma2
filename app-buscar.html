@@ -15,21 +15,11 @@
             <span>Servi<b>Hogar</b></span>
         </a>
         <nav class="sidebar-nav">
-            <a href="app-inicio.html" class="nav-item">
-                <span>Inicio</span>
-            </a>
-            <a href="app-buscar.html" class="nav-item active">
-                <span>Buscar</span>
-            </a>
-            <a href="app-chat.html" class="nav-item">
-                <span>Chats</span>
-            </a>
-            <a href="app-historial.html" class="nav-item">
-                <span>Historial</span>
-            </a>
-            <a href="app-perfil.html" class="nav-item">
-                <span>Perfil</span>
-            </a>
+            <a href="app-inicio.html" class="nav-item"><span>Inicio</span></a>
+            <a href="app-buscar.html" class="nav-item active"><span>Buscar</span></a>
+            <a href="app-chat.html" class="nav-item"><span>Chats</span></a>
+            <a href="app-historial.html" class="nav-item"><span>Historial</span></a>
+            <a href="app-perfil.html" class="nav-item"><span>Perfil</span></a>
         </nav>
         <div class="sidebar-user">
             <div class="user-name" id="sidebar-name">Cargando...</div>
@@ -41,10 +31,6 @@
     <div class="main">
         <div class="topbar">
             <div class="topbar-title">Buscar servicios</div>
-            <div class="topbar-actions">
-                <div class="topbar-notif">🔔<span class="badge-notif">2</span></div>
-                <div class="topbar-avatar" id="topbar-avatar">?</div>
-            </div>
         </div>
 
         <div class="page">
@@ -53,11 +39,11 @@
             </div>
 
             <div class="pills-row">
-                <button class="pill active" onclick="filtrar('todos')">Todos</button>
-                <button class="pill" onclick="filtrar('gasfitería')">Gasfitería</button>
-                <button class="pill" onclick="filtrar('electricidad')">Electricidad</button>
-                <button class="pill" onclick="filtrar('limpieza')">Limpieza</button>
-                <button class="pill" onclick="filtrar('mudanza')">Mudanza</button>
+                <button class="pill active" onclick="filtrar('todos', this)">Todos</button>
+                <button class="pill" onclick="filtrar('gasfitería', this)">Gasfitería</button>
+                <button class="pill" onclick="filtrar('electricidad', this)">Electricidad</button>
+                <button class="pill" onclick="filtrar('limpieza', this)">Limpieza</button>
+                <button class="pill" onclick="filtrar('mudanza', this)">Mudanza</button>
             </div>
 
             <div id="lista-trabajadores" class="workers-grid"></div>
@@ -65,6 +51,7 @@
     </div>
 </div>
 
+<script src="assets/js/datos.js"></script>
 <script src="assets/js/app-interno.js"></script>
 </body>
 </html>

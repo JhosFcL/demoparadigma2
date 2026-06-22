@@ -1,240 +1,612 @@
+/* ============================================================
+   ServiHogar — Lógica de la app interna (requiere datos.js)
+   ============================================================ */
 document.addEventListener("DOMContentLoaded", function () {
-    const sesion = JSON.parse(localStorage.getItem("servihogar_sesion") || "null");
+  const sesion = DB.getSesion();
 
-    // Si no hay sesión, redirigir al login
-    if (!sesion) {
-        window.location.href = "login.html";
-        return;
+  // Sin sesion, ir al login
+  if (!sesion) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const esTrabajador = sesion.tipo === "trabajador";
+
+  // Escapar texto para insertarlo de forma segura en el HTML
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+
+  // Iniciales a partir de un nombre completo (para los avatares)
+  function inicialesDe(nombre) {
+    const p = String(nombre || "").trim().split(/\s+/);
+    return ((p[0] ? p[0][0] : "") + (p[1] ? p[1][0] : "")).toUpperCase() || "?";
+  }
+
+  function horaDe(ts) {
+    const d = new Date(ts);
+    return d.getHours().toString().padStart(2, "0") + ":" + d.getMinutes().toString().padStart(2, "0");
+  }
+
+  // ── Barra lateral (común a todas las páginas internas) ──
+  const iniciales = DB.iniciales(sesion);
+  const topAvatar = document.getElementById("topbar-avatar");
+  if (topAvatar) topAvatar.textContent = iniciales;
+
+  const sidebarName = document.getElementById("sidebar-name");
+  const sidebarType = document.getElementById("sidebar-type");
+  if (sidebarName) sidebarName.textContent = sesion.nombre + " " + (sesion.apellido || "");
+  if (sidebarType) sidebarType.textContent = esTrabajador ? "Trabajador · Verificado" : "Cliente";
+
+  const btnSalir = document.getElementById("btn-salir");
+  if (btnSalir) {
+    btnSalir.addEventListener("click", function (e) {
+      e.preventDefault();
+      DB.cerrarSesion();
+      window.location.href = "index.html";
+    });
+  }
+
+  // ── Nav adaptado al rol: el trabajador publica, el cliente busca ──
+  const linkBuscar = document.querySelector('.sidebar-nav a[href="app-buscar.html"]');
+  if (linkBuscar && esTrabajador) {
+    linkBuscar.setAttribute("href", "app-publicar.html");
+    const label = linkBuscar.querySelector("span:last-child");
+    if (label) label.textContent = "Publicar";
+  }
+
+  /* ========================================================
+     INICIO — apartado distinto para cliente y trabajador
+     ======================================================== */
+  const feed = document.querySelector(".feed");
+  if (feed) {
+    const topTitle = document.querySelector(".topbar-title");
+    const feedBtn = document.querySelector(".btn-solicitar");
+    const tabs = document.querySelectorAll(".feed-topbar .tab");
+
+    // Saludo personalizado + métricas reales (en vez de cifras inventadas)
+    const welcome = document.getElementById("welcome");
+    const statsRow = document.getElementById("stats-row");
+    const statCard = (val, lbl) =>
+      `<div class="stat-card"><div class="stat-val">${val}</div><div class="stat-lbl">${esc(lbl)}</div></div>`;
+
+    function pintarResumen() {
+      const pubs = DB.getPublicaciones();
+      const trabajadores = DB.getUsuarios().filter((u) => u.tipo === "trabajador");
+      if (welcome) {
+        const sub = esTrabajador
+          ? "Gestiona tus publicaciones y conversaciones."
+          : "Encuentra y contrata servicios verificados cerca de ti.";
+        welcome.innerHTML = `<h2>Hola, ${esc(sesion.nombre)}</h2><p>${sub}</p>`;
+      }
+      if (statsRow) {
+        if (esTrabajador) {
+          const mias = pubs.filter((p) => (p.trabajadorCorreo || "").toLowerCase() === sesion.correo.toLowerCase());
+          const convs = DB.getConversacionesDe(sesion.correo).length;
+          statsRow.innerHTML =
+            statCard(mias.length, "Servicios publicados") +
+            statCard(convs, "Conversaciones") +
+            statCard(sesion.verificado ? "Sí" : "No", "Cuenta verificada");
+        } else {
+          const categorias = new Set(pubs.map((p) => p.categoria)).size;
+          const verificados = trabajadores.filter((t) => t.verificado).length;
+          statsRow.innerHTML =
+            statCard(pubs.length, "Servicios disponibles") +
+            statCard(verificados, "Trabajadores verificados") +
+            statCard(categorias, "Categorías");
+        }
+      }
     }
 
-    const iniciales = (sesion.nombre[0] + (sesion.apellido ? sesion.apellido[0] : "")).toUpperCase();
+    const publicaciones = DB.getPublicaciones();
 
-    const topAvatar = document.getElementById("topbar-avatar");
-    if (topAvatar) topAvatar.textContent = iniciales;
-
-    const sidebarName = document.getElementById("sidebar-name");
-    const sidebarType = document.getElementById("sidebar-type");
-    const sidebarInitials = document.getElementById("sidebar-initials");
-
-    if (sidebarName) sidebarName.textContent = sesion.nombre + " " + (sesion.apellido || "");
-    if (sidebarType) sidebarType.textContent = sesion.tipo === "trabajador" ? "Trabajador" : "Cliente";
-    if (sidebarInitials) sidebarInitials.textContent = iniciales;
-
-    const btnSalir = document.getElementById("btn-salir");
-    if (btnSalir) {
-        btnSalir.addEventListener("click", function (e) {
-            e.preventDefault();
-            localStorage.removeItem("servihogar_sesion");
-            window.location.href = "index.html";
-        });
-    }
-
-    document.querySelectorAll(".pill").forEach(pill => {
-        pill.addEventListener("click", function () {
-            document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
-            this.classList.add("active");
-        });
-    });
-
-    document.querySelectorAll(".tab").forEach(tab => {
-        tab.addEventListener("click", function () {
-            document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-            this.classList.add("active");
-        });
-    });
-
-    document.querySelectorAll(".post-action.like-btn").forEach(btn => {
-        btn.addEventListener("click", function () {
-            this.classList.toggle("liked");
-            const count = this.querySelector(".like-count");
-            if (count) {
-                let n = parseInt(count.textContent);
-                count.textContent = this.classList.contains("liked") ? n + 1 : n - 1;
-            }
-        });
-    });
-
-    const chatForm = document.getElementById("chat-form");
-    const chatInput = document.getElementById("chat-input");
-    const chatMessages = document.getElementById("chat-messages");
-
-    if (chatForm && chatInput && chatMessages) {
-        chatForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            const text = chatInput.value.trim();
-            if (!text) return;
-
-            const now = new Date();
-            const hora = now.getHours().toString().padStart(2, "0") + ":" + now.getMinutes().toString().padStart(2, "0");
-
-            const msgEl = document.createElement("div");
-            msgEl.className = "msg sent";
-            msgEl.innerHTML = `
-                <div>
-                    <div class="msg-bubble">${text}</div>
-                    <div class="msg-time">${hora}</div>
-                </div>
-            `;
-            chatMessages.appendChild(msgEl);
-            chatInput.value = "";
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            setTimeout(() => {
-                const resp = document.createElement("div");
-                resp.className = "msg";
-                resp.innerHTML = `
-                    <div class="msg-avatar">C</div>
+    function cardPublicacion(p, propia) {
+      return `
+        <div class="post-card">
+            <div class="post-header">
+                <div class="post-user">
+                    <div class="post-avatar-placeholder">${inicialesDe(p.trabajadorNombre)}</div>
                     <div>
-                        <div class="msg-bubble">Entendido, te confirmo en un momento. 👍</div>
-                        <div class="msg-time">${hora}</div>
+                        <div class="post-name">${esc(p.trabajadorNombre)} ${propia ? '<span class="badge-propio">Tú</span>' : ''}</div>
+                        <div class="post-meta">${esc(DB.capitalizar(p.categoria))} · ${esc(p.distrito || "Lima")} · ${horaDe(p.ts)}</div>
                     </div>
-                `;
-                chatMessages.appendChild(resp);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }, 1200);
-        });
+                </div>
+                <span class="post-tag">${esc(DB.capitalizar(p.categoria))}</span>
+            </div>
+            <div class="post-body">
+                <h3>${esc(p.titulo)}</h3>
+                <p>${esc(p.descripcion)}</p>
+            </div>
+            <div class="post-calificacion">Precio: ${esc(p.precio || "A convenir")}${p.trabajadorVerificado === false ? "" : " · Trabajador verificado"}</div>
+            <div class="post-footer">
+                ${propia
+                  ? `<button class="post-action btn-eliminar-pub" data-id="${p.id}">Eliminar</button>`
+                  : `<button class="post-action btn-contactar-pub" data-correo="${esc(p.trabajadorCorreo)}">Contactar</button>`}
+                <button class="post-action like-btn">Me gusta <span class="like-count">0</span></button>
+            </div>
+        </div>`;
     }
 
-    document.querySelectorAll(".chat-item").forEach(item => {
-        item.addEventListener("click", function () {
-            document.querySelectorAll(".chat-item").forEach(i => i.classList.remove("active"));
-            this.classList.add("active");
-            // Quitar badge de no leído
-            const badge = this.querySelector(".chat-unread");
-            if (badge) badge.remove();
-        });
-    });
+    function pintarFeed() {
+      const pubs = DB.getPublicaciones();
+      if (esTrabajador) {
+        if (topTitle) topTitle.textContent = "Mis publicaciones";
+        if (feedBtn) { feedBtn.textContent = "+ Publicar servicio"; feedBtn.setAttribute("href", "app-publicar.html"); }
+        if (tabs[0]) tabs[0].textContent = "Mis servicios";
+        if (tabs[1]) tabs[1].textContent = "Todos";
 
-    document.querySelectorAll(".btn-reservar").forEach(btn => {
+        const mias = pubs.filter((p) => (p.trabajadorCorreo || "").toLowerCase() === sesion.correo.toLowerCase());
+        feed.innerHTML = mias.length
+          ? mias.map((p) => cardPublicacion(p, true)).join("")
+          : `<div class="empty-state">
+                <h3>Aún no has publicado servicios</h3>
+                <p>Publica tus servicios para que los clientes puedan encontrarte y contactarte.</p>
+                <a href="app-publicar.html" class="btn-primary" style="max-width:220px;margin:10px auto 0;">+ Publicar mi primer servicio</a>
+             </div>`;
+      } else {
+        if (topTitle) topTitle.textContent = "Servicios disponibles";
+        feed.innerHTML = pubs.length
+          ? pubs.map((p) => cardPublicacion(p, false)).join("")
+          : `<div class="empty-state"><h3>Todavía no hay servicios publicados</h3><p>Vuelve pronto, los trabajadores publicarán sus servicios.</p></div>`;
+      }
+      enlazarFeed();
+    }
+
+    function enlazarFeed() {
+      feed.querySelectorAll(".like-btn").forEach((btn) => {
         btn.addEventListener("click", function () {
-            alert("Redirigiendo a Buscar para encontrar al mismo trabajador...");
-            window.location.href = "app-buscar.html";
+          this.classList.toggle("liked");
+          const count = this.querySelector(".like-count");
+          let n = parseInt(count.textContent, 10) || 0;
+          count.textContent = this.classList.contains("liked") ? n + 1 : Math.max(0, n - 1);
         });
+      });
+      feed.querySelectorAll(".btn-contactar-pub").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          localStorage.setItem("servihogar_chat_target", this.dataset.correo);
+          window.location.href = "app-chat.html";
+        });
+      });
+      feed.querySelectorAll(".btn-eliminar-pub").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          if (confirm("¿Eliminar esta publicación?")) {
+            DB.eliminarPublicacion(this.dataset.id);
+            pintarFeed();
+            pintarResumen();
+          }
+        });
+      });
+    }
+
+    // Tabs del feed
+    tabs.forEach((tab, i) => {
+      tab.addEventListener("click", function () {
+        tabs.forEach((t) => t.classList.remove("active"));
+        this.classList.add("active");
+        const pubs = DB.getPublicaciones();
+        if (esTrabajador) {
+          const lista = i === 0
+            ? pubs.filter((p) => (p.trabajadorCorreo || "").toLowerCase() === sesion.correo.toLowerCase())
+            : pubs;
+          feed.innerHTML = lista.length ? lista.map((p) => cardPublicacion(p, i === 0)).join("") : `<div class="empty-state"><h3>Sin publicaciones</h3></div>`;
+          enlazarFeed();
+        }
+      });
     });
-});
 
-const trabajadores = [
-    { nombre:"Carlos Quispe", categoria:"gasfitería", emoji:"🔧", rating:"4.9", trabajos:42, distrito:"Miraflores" },
-    { nombre:"Ana Torres", categoria:"limpieza", emoji:"🧹", rating:"4.8", trabajos:87, distrito:"San Isidro" },
-    { nombre:"Pedro Mamani", categoria:"electricidad", emoji:"⚡", rating:"5.0", trabajos:31, distrito:"San Borja" },
-    { nombre:"Rosa Flores", categoria:"limpieza", emoji:"🧹", rating:"4.7", trabajos:65, distrito:"Surco" },
-    { nombre:"Juan Huanca", categoria:"mudanza", emoji:"📦", rating:"4.8", trabajos:19, distrito:"La Molina" },
-    { nombre:"Luis Cárdenas", categoria:"electricidad", emoji:"⚡", rating:"4.9", trabajos:53, distrito:"Lince" },
-];
+    pintarResumen();
+    pintarFeed();
+  }
 
-function renderTrabajadores(lista) {
-    const cont = document.getElementById("lista-trabajadores");
-    if (!cont) return;
-    cont.innerHTML = lista.map(t => `
+  /* ========================================================
+     BUSCAR — el cliente encuentra trabajadores verificados
+     ======================================================== */
+  const listaTrab = document.getElementById("lista-trabajadores");
+  if (listaTrab) {
+    function trabajadores() {
+      return DB.getUsuarios().filter((u) => u.tipo === "trabajador");
+    }
+
+    window.renderTrabajadores = function (lista) {
+      listaTrab.innerHTML = lista.length ? lista.map((t) => {
+        const nPubs = DB.getPublicacionesDe(t.correo).length;
+        return `
         <div class="worker-card">
             <div style="display:flex;align-items:center;gap:12px;">
-                <div class="worker-avatar">${t.emoji}</div>
+                <div class="worker-avatar">${inicialesDe(t.nombre + " " + (t.apellido || ""))}</div>
                 <div>
-                    <div class="worker-name">${t.nombre}</div>
-                    <div class="worker-cat">${t.categoria.charAt(0).toUpperCase()+t.categoria.slice(1)} · ${t.distrito}</div>
+                    <div class="worker-name">${esc(t.nombre)} ${esc(t.apellido || "")} ${t.verificado ? '<span class="badge-verif">Verificado</span>' : ''}</div>
+                    <div class="worker-cat">${esc(DB.capitalizar(t.categoria))} · ${esc(t.distrito || "Lima")}</div>
                 </div>
             </div>
-            <div class="worker-rating">⭐ ${t.rating} · ${t.trabajos} trabajos</div>
-            <button class="btn-contactar" onclick="alert('Conectando con ${t.nombre}...')">Solicitar servicio</button>
-        </div>
-    `).join("");
-}
+            <div class="worker-rating">${esc(t.experiencia || 0)} años de experiencia · ${nPubs} servicio(s)</div>
+            <button class="btn-contactar" data-correo="${esc(t.correo)}">Contactar</button>
+        </div>`;
+      }).join("") : `<div class="empty-state"><h3>No se encontraron trabajadores</h3></div>`;
 
-function filtrar(cat) {
-    document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
-    event.target.classList.add("active");
-    const lista = cat === "todos" ? trabajadores : trabajadores.filter(t => t.categoria === cat);
-    renderTrabajadores(lista);
-}
+      listaTrab.querySelectorAll(".btn-contactar").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          localStorage.setItem("servihogar_chat_target", this.dataset.correo);
+          window.location.href = "app-chat.html";
+        });
+      });
+    };
 
-const buscador = document.getElementById("buscador");
-if (buscador) {
-    buscador.addEventListener("input", function() {
+    window.filtrar = function (cat, btn) {
+      document.querySelectorAll(".pill").forEach((p) => p.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+      const lista = cat === "todos" ? trabajadores() : trabajadores().filter((t) => t.categoria === cat);
+      window.renderTrabajadores(lista);
+    };
+
+    const buscador = document.getElementById("buscador");
+    if (buscador) {
+      buscador.addEventListener("input", function () {
         const q = this.value.toLowerCase();
-        renderTrabajadores(trabajadores.filter(t =>
-            t.nombre.toLowerCase().includes(q) || t.categoria.includes(q) || t.distrito.toLowerCase().includes(q)
+        window.renderTrabajadores(trabajadores().filter((t) =>
+          (t.nombre + " " + (t.apellido || "")).toLowerCase().includes(q) ||
+          (t.categoria || "").toLowerCase().includes(q) ||
+          (t.distrito || "").toLowerCase().includes(q)
         ));
-    });
-}
+      });
+    }
 
-if (document.getElementById("lista-trabajadores")) renderTrabajadores(trabajadores);
+    window.renderTrabajadores(trabajadores());
+  }
 
-const historial = [
-    { servicio:"Reparación de tubería", trabajador:"Carlos Quispe", emoji:"🔧", fecha:"12 may 2025", monto:"S/ 80", estado:"completado" },
-    { servicio:"Limpieza del hogar", trabajador:"Ana Torres", emoji:"🧹", fecha:"05 may 2025", monto:"S/ 120", estado:"completado" },
-    { servicio:"Instalación eléctrica", trabajador:"Pedro Mamani", emoji:"⚡", fecha:"28 abr 2025", monto:"S/ 150", estado:"completado" },
-    { servicio:"Mudanza de oficina", trabajador:"Juan Huanca", emoji:"📦", fecha:"30 may 2025", monto:"S/ 200", estado:"pendiente" },
-];
+  /* ========================================================
+     HISTORIAL — demostración por rol
+     ======================================================== */
+  const listaHist = document.getElementById("lista-historial");
+  if (listaHist) {
+    // Datos de demostración coherentes con el rol: el cliente ve a los
+    // trabajadores que contrató; el trabajador ve a los clientes que atendió.
+    const historialCliente = [
+      { servicio: "Reparación de tubería", contraparte: "Carlos Quispe", fecha: "12 may 2025", monto: "S/ 80", estado: "completado" },
+      { servicio: "Limpieza del hogar", contraparte: "Rosa Flores", fecha: "05 may 2025", monto: "S/ 120", estado: "completado" },
+      { servicio: "Instalación eléctrica", contraparte: "Pedro Mamani", fecha: "28 abr 2025", monto: "S/ 150", estado: "completado" },
+      { servicio: "Mudanza de oficina", contraparte: "Juan Huanca", fecha: "30 may 2025", monto: "S/ 200", estado: "pendiente" },
+    ];
+    const historialTrabajador = [
+      { servicio: "Reparación de tubería", contraparte: "Ana Rodríguez", fecha: "12 may 2025", monto: "S/ 80", estado: "completado" },
+      { servicio: "Desatoro de desagüe", contraparte: "María Salas", fecha: "06 may 2025", monto: "S/ 90", estado: "completado" },
+      { servicio: "Cambio de grifería", contraparte: "Jorge Ramos", fecha: "29 abr 2025", monto: "S/ 110", estado: "completado" },
+      { servicio: "Instalación de termas", contraparte: "Lucía Paredes", fecha: "30 may 2025", monto: "S/ 160", estado: "pendiente" },
+    ];
+    const historial = esTrabajador ? historialTrabajador : historialCliente;
+    const etiqueta = esTrabajador ? "Cliente" : "Trabajador";
 
-function renderHistorial(lista) {
-    const cont = document.getElementById("lista-historial");
-    if (!cont) return;
-    cont.innerHTML = lista.length ? lista.map(h => `
+    function renderHistorial(lista) {
+      listaHist.innerHTML = lista.length ? lista.map((h) => `
         <div class="historial-card">
             <div style="display:flex;align-items:center;gap:14px;">
-                <div style="font-size:1.8rem;">${h.emoji}</div>
+                <div class="hist-avatar">${inicialesDe(h.contraparte)}</div>
                 <div>
                     <div style="font-weight:600;font-size:15px;">${h.servicio}</div>
-                    <div style="font-size:13px;color:#6b7280;">${h.trabajador} · ${h.fecha}</div>
+                    <div style="font-size:13px;color:#6b7280;">${etiqueta}: ${h.contraparte} · ${h.fecha}</div>
                 </div>
             </div>
             <div style="display:flex;align-items:center;gap:12px;">
                 <span style="font-weight:600;">${h.monto}</span>
-                <span class="badge-estado badge-${h.estado}">${h.estado.charAt(0).toUpperCase()+h.estado.slice(1)}</span>
-                ${h.estado==='completado'?`<button class="btn-reservar">Repetir</button>`:''}
+                <span class="badge-estado badge-${h.estado}">${DB.capitalizar(h.estado)}</span>
             </div>
-        </div>
-    `).join("") : `<div style="text-align:center;color:#9ca3af;padding:40px;">Sin servicios en esta categoría.</div>`;
-}
+        </div>`).join("") : `<div class="empty-state"><h3>Sin servicios en esta categoría.</h3></div>`;
+    }
 
-function mostrarTab(filtro, btn) {
-    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-    btn.classList.add("active");
-    renderHistorial(filtro === "todos" ? historial : historial.filter(h => h.estado === filtro));
-}
+    window.mostrarTab = function (filtro, btn) {
+      document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+      btn.classList.add("active");
+      renderHistorial(filtro === "todos" ? historial : historial.filter((h) => h.estado === filtro));
+    };
 
-if (document.getElementById("lista-historial")) renderHistorial(historial);
+    renderHistorial(historial);
+  }
 
-const conversaciones = [
-    { id:1, nombre:"Carlos Quispe", emoji:"🔧", mensajes:[
-        {tipo:"recv",texto:"Hola, ¿en qué te puedo ayudar?"},
-        {tipo:"sent",texto:"Necesito arreglar una tubería"},
-        {tipo:"recv",texto:"Claro, ¿cuándo te viene bien?"}
-    ]},
-    { id:2, nombre:"Ana Torres", emoji:"🧹", mensajes:[
-        {tipo:"recv",texto:"Buenos días, soy Ana para el servicio de limpieza"},
-        {tipo:"sent",texto:"Perfecto, necesito el servicio el sábado"}
-    ]},
-    { id:3, nombre:"Pedro Mamani", emoji:"⚡", mensajes:[
-        {tipo:"recv",texto:"¿En qué puedo ayudarte con la instalación eléctrica?"}
-    ]},
-];
+  /* ========================================================
+     PUBLICAR — el trabajador publica sus servicios
+     ======================================================== */
+  const formPublicar = document.getElementById("form-publicar");
+  if (formPublicar) {
+    // Solo trabajadores pueden publicar
+    if (!esTrabajador) {
+      alert("Solo los trabajadores pueden publicar servicios.");
+      window.location.href = "app-inicio.html";
+      return;
+    }
 
-let chatActual = null;
+    const misPubs = document.getElementById("mis-publicaciones");
 
-function renderChatList() {
-    const lista = document.getElementById("chat-list");
-    if (!lista) return;
-    lista.innerHTML = conversaciones.map(c => `
-        <div class="chat-item" onclick="abrirChat(${c.id})">
-            <div class="chat-item-name">${c.emoji} ${c.nombre}</div>
-            <div class="chat-item-last">${c.mensajes[c.mensajes.length-1].texto.substring(0,35)}...</div>
-        </div>
-    `).join("");
-}
+    // Precargar categoría del trabajador
+    if (sesion.categoria) formPublicar.categoria.value = sesion.categoria;
+    if (sesion.distrito) formPublicar.distrito.value = sesion.distrito;
 
-function abrirChat(id) {
-    chatActual = conversaciones.find(c => c.id === id);
-    document.getElementById("chat-header").textContent = chatActual.emoji + " " + chatActual.nombre;
-    const msgs = document.getElementById("chat-messages");
-    msgs.innerHTML = chatActual.mensajes.map(m => `
-        <div class="msg ${m.tipo === 'sent' ? 'sent' : ''}">
-            ${m.tipo === 'recv' ? `<div class="msg-avatar">${chatActual.emoji}</div>` : ''}
-            <div><div class="msg-bubble">${m.texto}</div></div>
-        </div>
-    `).join("");
-    msgs.scrollTop = msgs.scrollHeight;
-    document.querySelectorAll(".chat-item").forEach((el,i) => el.classList.toggle("active", conversaciones[i].id === id));
-}
+    function pintarMisPubs() {
+      const pubs = DB.getPublicacionesDe(sesion.correo);
+      misPubs.innerHTML = pubs.length ? pubs.map((p) => `
+        <div class="post-card">
+            <div class="post-header">
+                <div class="post-user">
+                    <div class="post-avatar-placeholder">${inicialesDe(p.trabajadorNombre || sesion.nombre)}</div>
+                    <div>
+                        <div class="post-name">${esc(p.titulo)}</div>
+                        <div class="post-meta">${esc(DB.capitalizar(p.categoria))} · ${esc(p.distrito || "Lima")} · ${esc(p.precio || "A convenir")}</div>
+                    </div>
+                </div>
+                <button class="post-action btn-eliminar-pub" data-id="${p.id}">Eliminar</button>
+            </div>
+            <div class="post-body"><p>${esc(p.descripcion)}</p></div>
+        </div>`).join("") : `<div class="empty-state"><h3>Aún no tienes publicaciones</h3><p>Completa el formulario para publicar tu primer servicio.</p></div>`;
 
-if (document.getElementById("chat-list")) renderChatList();
+      misPubs.querySelectorAll(".btn-eliminar-pub").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          if (confirm("¿Eliminar esta publicación?")) {
+            DB.eliminarPublicacion(this.dataset.id);
+            pintarMisPubs();
+          }
+        });
+      });
+    }
+
+    formPublicar.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const titulo = formPublicar.titulo.value.trim();
+      const categoria = formPublicar.categoria.value;
+      const distrito = formPublicar.distrito.value.trim();
+      const precio = formPublicar.precio.value.trim();
+      const descripcion = formPublicar.descripcion.value.trim();
+
+      if (!titulo || !categoria || !distrito || !descripcion) {
+        alert("Completa el título, la categoría, el distrito y la descripción.");
+        return;
+      }
+      if (titulo.length < 5) { alert("El título debe ser más descriptivo (mínimo 5 caracteres)."); return; }
+      if (descripcion.length < 15) { alert("La descripción debe tener al menos 15 caracteres."); return; }
+
+      DB.addPublicacion({
+        trabajadorCorreo: sesion.correo,
+        trabajadorNombre: sesion.nombre + " " + (sesion.apellido || ""),
+        trabajadorVerificado: !!sesion.verificado,
+        categoria,
+        titulo, descripcion, distrito,
+        precio: precio || "A convenir",
+      });
+
+      formPublicar.reset();
+      if (sesion.categoria) formPublicar.categoria.value = sesion.categoria;
+      if (sesion.distrito) formPublicar.distrito.value = sesion.distrito;
+      alert("¡Servicio publicado! Ya es visible para los clientes.");
+      pintarMisPubs();
+    });
+
+    pintarMisPubs();
+  }
+
+  /* ========================================================
+     CHAT — mensajería funcional cliente <-> trabajador
+     ======================================================== */
+  const chatList = document.getElementById("chat-list");
+  if (chatList) {
+    const chatHeader = document.getElementById("chat-header");
+    const chatMessages = document.getElementById("chat-messages");
+    const chatForm = document.getElementById("chat-form");
+    const chatInput = document.getElementById("chat-input");
+    const chatImage = document.getElementById("chat-image");
+    const chatHeaderActions = document.getElementById("chat-header-actions");
+    const btnVaciarChat = document.getElementById("btn-vaciar-chat");
+    let chatActual = null; // correo de la otra persona
+
+    function pintarLista() {
+      const convs = DB.getConversacionesDe(sesion.correo);
+      if (!convs.length) {
+        chatList.innerHTML = `<div class="empty-state" style="padding:24px;"><p>No tienes conversaciones todavía.</p></div>`;
+        return;
+      }
+      chatList.innerHTML = convs.map((c) => `
+        <div class="chat-item ${c.correo === chatActual ? "active" : ""}" data-correo="${esc(c.correo)}">
+            <div class="chat-item-name">${esc(c.nombre)} <span class="chat-item-rol">${c.tipo === "trabajador" ? "Trabajador" : "Cliente"}</span></div>
+            <div class="chat-item-last">${c.ultimo ? (c.ultimo.texto ? esc(c.ultimo.texto.substring(0, 38)) : "(imagen)") : "Nueva conversación"}</div>
+        </div>`).join("");
+
+      chatList.querySelectorAll(".chat-item").forEach((item) => {
+        item.addEventListener("click", function () {
+          abrirChat(this.dataset.correo);
+        });
+      });
+    }
+
+    function pintarMensajes() {
+      if (!chatActual) return;
+      const otro = DB.getUsuarioPorCorreo(chatActual);
+      const msgs = DB.getMensajes(sesion.correo, chatActual);
+      chatMessages.innerHTML = msgs.length ? msgs.map((m) => {
+        const mio = (m.de || "").toLowerCase() === sesion.correo.toLowerCase();
+        const avatar = otro ? DB.iniciales(otro) : "?";
+        const imagenHtml = m.imagen ? `<img class="msg-image" src="${m.imagen}" alt="Imagen enviada">` : "";
+        const textoHtml = m.texto ? `<div>${esc(m.texto)}</div>` : "";
+        return `
+          <div class="msg ${mio ? "sent" : ""}">
+              ${mio ? "" : `<div class="msg-avatar">${avatar}</div>`}
+              <div>
+                  <div class="msg-bubble">${imagenHtml}${textoHtml}</div>
+                  <div class="msg-time">${horaDe(m.ts)}</div>
+              </div>
+          </div>`;
+      }).join("") : `<div class="empty-state" style="margin:auto;"><p>Escribe el primer mensaje.</p></div>`;
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function abrirChat(correo) {
+      chatActual = correo.toLowerCase();
+      const otro = DB.getUsuarioPorCorreo(chatActual);
+      const nombre = otro ? otro.nombre + " " + (otro.apellido || "") : chatActual;
+      const rol = otro ? (otro.tipo === "trabajador" ? "Trabajador" : "Cliente") : "";
+      chatHeader.textContent = nombre + (rol ? " · " + rol : "");
+      if (chatHeaderActions) chatHeaderActions.hidden = false;
+      pintarMensajes();
+      chatList.querySelectorAll(".chat-item").forEach((el) => {
+        el.classList.toggle("active", el.dataset.correo === chatActual);
+      });
+    }
+
+    function reactivarSeleccion() {
+      chatList.querySelectorAll(".chat-item").forEach((el) => {
+        el.classList.toggle("active", el.dataset.correo === chatActual);
+      });
+    }
+
+    if (chatForm) {
+      chatForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const texto = chatInput.value.trim();
+        if (!texto || !chatActual) {
+          if (!chatActual) alert("Selecciona una conversación primero.");
+          return;
+        }
+        DB.addMensaje(sesion.correo, chatActual, texto);
+        chatInput.value = "";
+        pintarMensajes();
+        pintarLista();
+        reactivarSeleccion();
+      });
+    }
+
+    // Adjuntar imagen: se envía como un mensaje con imagen
+    if (chatImage) {
+      chatImage.addEventListener("change", function () {
+        const file = this.files && this.files[0];
+        this.value = ""; // permitir volver a elegir la misma imagen
+        if (!file) return;
+        if (!chatActual) { alert("Selecciona una conversación primero."); return; }
+        if (!file.type.startsWith("image/")) { alert("Solo se permiten imágenes."); return; }
+        if (file.size > 2 * 1024 * 1024) { alert("La imagen es muy grande (máximo 2 MB)."); return; }
+        const reader = new FileReader();
+        reader.onload = function () {
+          try {
+            DB.addMensaje(sesion.correo, chatActual, chatInput.value.trim(), reader.result);
+            chatInput.value = "";
+            pintarMensajes();
+            pintarLista();
+            reactivarSeleccion();
+          } catch (err) {
+            alert("No se pudo guardar la imagen (almacenamiento lleno).");
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Vaciar el chat solo para el usuario actual (el contacto lo sigue viendo)
+    if (btnVaciarChat) {
+      btnVaciarChat.addEventListener("click", function () {
+        if (!chatActual) return;
+        if (confirm("¿Vaciar este chat? Solo se borrará para ti; el contacto seguirá viendo los mensajes.")) {
+          DB.vaciarMensajes(sesion.correo, chatActual);
+          pintarMensajes();
+          pintarLista();
+          reactivarSeleccion();
+        }
+      });
+    }
+
+    // ---- Visor de imágenes (lightbox con zoom) ----
+    let lb, lbImg, lbScale = 1, lbX = 0, lbY = 0, lbDrag = false, lbDX = 0, lbDY = 0;
+
+    function lbAplicar() {
+      lbImg.style.transform = "translate(" + lbX + "px," + lbY + "px) scale(" + lbScale + ")";
+    }
+    function lbZoom(z) {
+      lbScale = Math.min(5, Math.max(0.5, Math.round(z * 100) / 100));
+      if (lbScale <= 1) { lbX = 0; lbY = 0; }
+      lbAplicar();
+      const lbl = lb.querySelector(".lightbox-zoom-reset");
+      if (lbl) lbl.textContent = Math.round(lbScale * 100) + "%";
+    }
+    function crearLightbox() {
+      lb = document.createElement("div");
+      lb.className = "lightbox";
+      lb.innerHTML =
+        '<button class="lightbox-close" type="button" aria-label="Cerrar">×</button>' +
+        '<img class="lightbox-img" alt="Imagen ampliada" draggable="false">' +
+        '<div class="lightbox-controls">' +
+          '<button type="button" data-z="out" aria-label="Alejar">−</button>' +
+          '<button type="button" class="lightbox-zoom-reset" data-z="reset">100%</button>' +
+          '<button type="button" data-z="in" aria-label="Acercar">+</button>' +
+        '</div>';
+      document.body.appendChild(lb);
+      lbImg = lb.querySelector(".lightbox-img");
+
+      lb.querySelector(".lightbox-close").addEventListener("click", cerrarLightbox);
+      lb.addEventListener("click", function (e) { if (e.target === lb) cerrarLightbox(); });
+      lb.querySelectorAll(".lightbox-controls button").forEach(function (b) {
+        b.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (b.dataset.z === "in") lbZoom(lbScale + 0.25);
+          else if (b.dataset.z === "out") lbZoom(lbScale - 0.25);
+          else lbZoom(1);
+        });
+      });
+      lbImg.addEventListener("wheel", function (e) {
+        e.preventDefault();
+        lbZoom(lbScale + (e.deltaY < 0 ? 0.2 : -0.2));
+      }, { passive: false });
+      lbImg.addEventListener("dblclick", function (e) {
+        e.preventDefault();
+        lbZoom(lbScale > 1 ? 1 : 2);
+      });
+      lbImg.addEventListener("pointerdown", function (e) {
+        lbDrag = true; lbDX = e.clientX - lbX; lbDY = e.clientY - lbY;
+        lbImg.setPointerCapture(e.pointerId);
+      });
+      lbImg.addEventListener("pointermove", function (e) {
+        if (!lbDrag) return;
+        lbX = e.clientX - lbDX; lbY = e.clientY - lbDY; lbAplicar();
+      });
+      lbImg.addEventListener("pointerup", function () { lbDrag = false; });
+    }
+    function abrirLightbox(src) {
+      if (!lb) crearLightbox();
+      lbImg.src = src;
+      lbX = 0; lbY = 0;
+      lbZoom(1);
+      lb.classList.add("open");
+    }
+    function cerrarLightbox() { if (lb) lb.classList.remove("open"); }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") cerrarLightbox();
+    });
+    chatMessages.addEventListener("click", function (e) {
+      const img = e.target.closest(".msg-image");
+      if (img) abrirLightbox(img.src);
+    });
+
+    pintarLista();
+
+    // Si venimos de "Contactar", abrir/crear esa conversación
+    const target = localStorage.getItem("servihogar_chat_target");
+    if (target) {
+      localStorage.removeItem("servihogar_chat_target");
+      const t = target.toLowerCase();
+      if (t !== sesion.correo.toLowerCase()) {
+        // asegurar que aparezca en la lista aunque no haya mensajes
+        if (!DB.getConversacionesDe(sesion.correo).some((c) => c.correo === t)) {
+          const otro = DB.getUsuarioPorCorreo(t);
+          const item = document.createElement("div");
+          item.className = "chat-item";
+          item.dataset.correo = t;
+          item.innerHTML = `<div class="chat-item-name">${esc(otro ? otro.nombre + " " + (otro.apellido || "") : t)}</div><div class="chat-item-last">Nueva conversación</div>`;
+          item.addEventListener("click", () => abrirChat(t));
+          if (chatList.querySelector(".empty-state")) chatList.innerHTML = "";
+          chatList.prepend(item);
+        }
+        abrirChat(t);
+      }
+    } else {
+      // abrir la primera conversación por defecto
+      const convs = DB.getConversacionesDe(sesion.correo);
+      if (convs.length) abrirChat(convs[0].correo);
+    }
+  }
+});

@@ -73,7 +73,7 @@ header {
 
 .logo h4 span { color: var(--color-primario); }
 
-nav { display: flex; gap: 10px; }
+nav { display: flex; align-items: center; gap: 10px; }
 
 nav a {
     text-decoration: none;
@@ -82,21 +82,17 @@ nav a {
     font-size: 15px;
     padding: 8px 16px;
     border-radius: var(--radio-sm);
-    transition: var(--transicion);
     position: relative;
 }
 
-nav a::after {
-    content: '';
-    position: absolute;
-    width: 0; height: 2px;
-    bottom: 4px; left: 16px;
-    background-color: var(--color-primario);
-    transition: var(--transicion);
-}
-
 nav a:hover { color: var(--color-blanco); }
-nav a:hover::after { width: calc(100% - 32px); }
+
+/* Header sin animaciones */
+header .boton-principal { transition: none; }
+header .boton-principal:hover {
+    transform: none;
+    box-shadow: 0 4px 14px var(--color-primario-glow);
+}
 
 .hero {
     background-color: var(--color-oscuro);
@@ -123,6 +119,18 @@ nav a:hover::after { width: calc(100% - 32px); }
     max-width: 1200px;
     margin: 0 auto;
     gap: 60px;
+}
+
+/* Hero centrado (sin imagen) */
+.hero-centrado {
+    justify-content: center;
+    text-align: center;
+}
+.hero-centrado .hero-texto {
+    max-width: 760px;
+}
+.hero-centrado .hero-botones {
+    justify-content: center;
 }
 
 .hero-contenido img {
@@ -1071,3 +1079,74 @@ footer {
     .hero-botones { justify-content: center; }
     .servicios-grid { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   Registro — verificación de trabajador y campos extra
+   ============================================================ */
+.registro form textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: var(--radio-sm);
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    background-color: #f9fafb;
+    color: var(--color-texto-principal);
+    margin-bottom: 16px;
+    resize: vertical;
+    transition: var(--transicion);
+}
+.registro form textarea:focus {
+    outline: none;
+    border-color: var(--color-primario);
+    background-color: var(--color-blanco);
+    box-shadow: 0 0 0 4px rgba(251, 191, 38, 0.15);
+}
+
+.bloque-trabajador {
+    border: 1px dashed var(--color-primario);
+    background: #fffdf5;
+    border-radius: var(--radio-md);
+    padding: 18px 16px 4px;
+    margin-bottom: 16px;
+}
+.bloque-trabajador-titulo {
+    font-weight: 700;
+    color: var(--color-texto-principal);
+    margin-bottom: 4px;
+}
+.bloque-trabajador-nota {
+    font-size: 13px;
+    color: var(--color-texto-secundario);
+    margin-bottom: 14px !important;
+    text-align: left !important;
+}
+.campo-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--color-texto-secundario);
+    margin-bottom: 14px;
+    cursor: pointer;
+}
+.campo-check input {
+    width: auto !important;
+    margin: 3px 0 0 !important;
+    accent-color: var(--color-primario);
+}
+
+/* Cuentas de ejemplo en el login */
+.cuentas-demo {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(251,191,38,0.3);
+    border-radius: var(--radio-md);
+    padding: 16px 20px;
+    margin-top: 22px;
+    max-width: 440px;
+    width: 100%;
+    color: #e5e7eb;
+}
+.cuentas-demo p { margin-bottom: 8px; font-weight: 600; color: var(--color-primario); }
+.cuentas-demo ul { list-style: none; font-size: 13px; line-height: 1.9; }
+.cuentas-demo b { color: #fff; }

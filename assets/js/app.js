@@ -4,20 +4,20 @@ document.addEventListener("DOMContentLoaded", function () {
   form.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    const correo = form.querySelector('input[type="email"]').value.trim();
-    const contraseña = form.querySelector('input[type="password"]').value.trim();
+    const correo = form.querySelector('input[type="email"]').value.trim().toLowerCase();
+    const contrasena = form.querySelector('input[type="password"]').value;
 
-    if (!correo || !contraseña) {
+    if (!correo || !contrasena) {
       alert("Por favor, completa ambos campos.");
       return;
     }
 
-    const usuarios = JSON.parse(localStorage.getItem("servihogar_usuarios") || "[]");
-    const usuario = usuarios.find(u => u.correo === correo && u.contraseña === contraseña);
+    const usuario = DB.autenticar(correo, contrasena);
 
     if (usuario) {
-      localStorage.setItem("servihogar_sesion", JSON.stringify(usuario));
+      DB.setSesion(usuario);
       alert("¡Bienvenido de nuevo, " + usuario.nombre + "!");
+      // El inicio muestra un apartado distinto según el rol (cliente/trabajador)
       setTimeout(() => { window.location.href = "app-inicio.html"; }, 400);
     } else {
       alert("Correo o contraseña incorrectos. ¿Ya tienes una cuenta? Si no, regístrate primero.");

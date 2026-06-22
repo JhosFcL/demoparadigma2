@@ -15,21 +15,11 @@
             <span>Servi<b>Hogar</b></span>
         </a>
         <nav class="sidebar-nav">
-            <a href="app-inicio.html" class="nav-item active">
-                <span>Inicio</span>
-            </a>
-            <a href="app-buscar.html" class="nav-item">
-                <span>Buscar</span>
-            </a>
-            <a href="app-chat.html" class="nav-item">
-                <span>Chats</span>
-            </a>
-            <a href="app-historial.html" class="nav-item">
-                <span>Historial</span>
-            </a>
-            <a href="app-perfil.html" class="nav-item">
-                <span>Perfil</span>
-            </a>
+            <a href="app-inicio.html" class="nav-item active"><span>Inicio</span></a>
+            <a href="app-buscar.html" class="nav-item"><span>Buscar</span></a>
+            <a href="app-chat.html" class="nav-item"><span>Chats</span></a>
+            <a href="app-historial.html" class="nav-item"><span>Historial</span></a>
+            <a href="app-perfil.html" class="nav-item"><span>Perfil</span></a>
         </nav>
         <div class="sidebar-user">
             <div class="user-name" id="sidebar-name">Cargando...</div>
@@ -41,31 +31,13 @@
     <div class="main">
         <div class="topbar">
             <div class="topbar-title">Trabajos recientes</div>
-            <div class="topbar-actions">
-                <div class="topbar-notif">
-                    🔔
-                    <span class="badge-notif">2</span>
-                </div>
-                <div class="topbar-avatar" id="topbar-avatar">?</div>
-            </div>
         </div>
 
         <div class="page">
 
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div class="stat-val">2,500+</div>
-                    <div class="stat-lbl">Trabajadores en Lima</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-val">10,000+</div>
-                    <div class="stat-lbl">Servicios completados</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-val">4.9 ★</div>
-                    <div class="stat-lbl">Calificación promedio</div>
-                </div>
-            </div>
+            <div class="welcome" id="welcome"></div>
+
+            <div class="stats-row" id="stats-row"></div>
 
             <div class="feed-topbar">
                 <div class="tabs">
@@ -75,88 +47,12 @@
                 <a href="app-buscar.html" class="btn-primary btn-solicitar">+ Solicitar servicio</a>
             </div>
 
-            <div class="feed">
-
-                <div class="post-card">
-                    <div class="post-header">
-                        <div class="post-user">
-                            <img class="post-avatar" src="assets/images/img1.jpg" alt="Carlos Méndez">
-                            <div>
-                                <div class="post-name">Carlos Méndez</div>
-                                <div class="post-meta">★ 4.9 (87) · Miraflores, Lima · Hace 2 horas</div>
-                            </div>
-                        </div>
-                        <span class="post-tag">Electricidad</span>
-                    </div>
-                    <div class="post-body">
-                        <h3>Instalación completa de sistema eléctrico en departamento nuevo</h3>
-                        <p>Proyecto completado: instalación de tablero eléctrico, cableado completo, enchufes y luminarias en departamento de 3 habitaciones. El cliente quedó muy satisfecho con el trabajo realizado en tiempo récord.</p>
-                    </div>
-                    <div class="post-calificacion">
-                        ⭐ Ana Rodríguez calificó este servicio — ★★★★★ &nbsp;&nbsp; 45 me gusta · 12 comentarios
-                    </div>
-                    <div class="post-footer">
-                        <button class="post-action like-btn">👍 Me gusta <span class="like-count">45</span></button>
-                        <button class="post-action">💬 Comentar</button>
-                        <button class="post-action">↗️ Compartir</button>
-                    </div>
-                </div>
-
-                <div class="post-card">
-                    <div class="post-header">
-                        <div class="post-user">
-                            <img class="post-avatar" src="assets/images/img2.jpg" alt="Laura Pérez">
-                            <div>
-                                <div class="post-name">Laura Pérez</div>
-                                <div class="post-meta">★ 5.0 (124) · San Borja, Lima · Hace 5 horas</div>
-                            </div>
-                        </div>
-                        <span class="post-tag">Limpieza</span>
-                    </div>
-                    <div class="post-body">
-                        <h3>Limpieza profunda de departamento — 3 habitaciones</h3>
-                        <p>Servicio completado en 4 horas. Limpieza de pisos, ventanas, cocina a fondo, baños y organización general. El cliente pidió reservar para el próximo mes. 🙌</p>
-                    </div>
-                    <div class="post-calificacion">
-                        ⭐ Marco Quispe calificó este servicio — ★★★★★ &nbsp;&nbsp; 31 me gusta · 7 comentarios
-                    </div>
-                    <div class="post-footer">
-                        <button class="post-action like-btn">👍 Me gusta <span class="like-count">31</span></button>
-                        <button class="post-action">💬 Comentar</button>
-                        <button class="post-action">↗️ Compartir</button>
-                    </div>
-                </div>
-
-                <div class="post-card">
-                    <div class="post-header">
-                        <div class="post-user">
-                            <img class="post-avatar" src="assets/images/img3.jpg" alt="Roberto Silva">
-                            <div>
-                                <div class="post-name">Roberto Silva</div>
-                                <div class="post-meta">★ 4.8 (56) · Lince, Lima · Hace 1 día</div>
-                            </div>
-                        </div>
-                        <span class="post-tag">Plomería</span>
-                    </div>
-                    <div class="post-body">
-                        <h3>Reparación de fuga en baño + cambio de tuberías</h3>
-                        <p>Detectamos la fuga, cambiamos las tuberías dañadas y revisamos todo el sistema de agua caliente. Trabajo garantizado por 6 meses.</p>
-                    </div>
-                    <div class="post-calificacion">
-                        18 me gusta · 4 comentarios
-                    </div>
-                    <div class="post-footer">
-                        <button class="post-action like-btn">👍 Me gusta <span class="like-count">18</span></button>
-                        <button class="post-action">💬 Comentar</button>
-                        <button class="post-action">↗️ Compartir</button>
-                    </div>
-                </div>
-
-            </div>
+            <div class="feed"></div>
         </div>
     </div>
 </div>
 
+<script src="assets/js/datos.js"></script>
 <script src="assets/js/app-interno.js"></script>
 </body>
 </html>

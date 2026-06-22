@@ -15,11 +15,11 @@
             <span>Servi<b>Hogar</b></span>
         </a>
         <nav class="sidebar-nav">
-            <a href="app-inicio.html" class="nav-item"><span class="icon">🏠</span><span>Inicio</span></a>
-            <a href="app-buscar.html" class="nav-item"><span class="icon">🔍</span><span>Buscar</span></a>
-            <a href="app-chat.html" class="nav-item"><span class="icon">💬</span><span>Chats</span></a>
-            <a href="app-historial.html" class="nav-item"><span class="icon">📋</span><span>Historial</span></a>
-            <a href="app-perfil.html" class="nav-item active"><span class="icon">👤</span><span>Perfil</span></a>
+            <a href="app-inicio.html" class="nav-item"><span>Inicio</span></a>
+            <a href="app-buscar.html" class="nav-item"><span>Buscar</span></a>
+            <a href="app-chat.html" class="nav-item"><span>Chats</span></a>
+            <a href="app-historial.html" class="nav-item"><span>Historial</span></a>
+            <a href="app-perfil.html" class="nav-item active"><span>Perfil</span></a>
         </nav>
         <div class="sidebar-user">
             <div class="user-name" id="sidebar-name">Cargando...</div>
@@ -31,10 +31,6 @@
     <div class="main">
         <div class="topbar">
             <div class="topbar-title">Mi perfil</div>
-            <div class="topbar-actions">
-                <div class="topbar-notif">🔔<span class="badge-notif">2</span></div>
-                <div class="topbar-avatar" id="topbar-avatar">?</div>
-            </div>
         </div>
 
         <div class="page">
@@ -60,9 +56,27 @@
                         <span class="perfil-label">Distrito</span>
                         <span id="perfil-distrito" class="perfil-valor">—</span>
                     </div>
-                    <div class="perfil-fila perfil-fila-last">
+                    <div class="perfil-fila">
                         <span class="perfil-label">Tipo de cuenta</span>
                         <span id="perfil-tipo2" class="perfil-valor">—</span>
+                    </div>
+
+                    <!-- Datos visibles solo para trabajadores -->
+                    <div class="perfil-fila perfil-fila-trab" hidden>
+                        <span class="perfil-label">Categoría</span>
+                        <span id="perfil-categoria" class="perfil-valor">—</span>
+                    </div>
+                    <div class="perfil-fila perfil-fila-trab" hidden>
+                        <span class="perfil-label">Experiencia</span>
+                        <span id="perfil-experiencia" class="perfil-valor">—</span>
+                    </div>
+                    <div class="perfil-fila perfil-fila-trab" hidden>
+                        <span class="perfil-label">Verificación</span>
+                        <span id="perfil-verificado" class="perfil-valor">—</span>
+                    </div>
+                    <div class="perfil-fila perfil-fila-last perfil-fila-trab" hidden>
+                        <span class="perfil-label">Sobre mí</span>
+                        <span id="perfil-descripcion" class="perfil-valor">—</span>
                     </div>
                 </div>
 
@@ -74,6 +88,7 @@
     </div>
 </div>
 
+<script src="assets/js/datos.js"></script>
 <script src="assets/js/perfil.js"></script>
 <script src="assets/js/app-interno.js"></script>
 </body>
